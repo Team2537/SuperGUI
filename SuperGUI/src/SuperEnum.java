@@ -3,7 +3,7 @@
  *
  */
 public enum SuperEnum {
-	GEAR("GEAR"), SHOOT("SHOOT") /*, Right_click_action("Action tile") */;
+	SWITCH("SWITCH"), SCALE("SCALE");
 	
 	String name;
 	private SuperEnum(String name){

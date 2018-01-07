@@ -267,11 +267,11 @@ public class SuperPoint {
 		for (SuperAction a : actions) {
 			// draw arrow
 			switch (a.getAction()) {
-			case GEAR:
-				g.setColor(new Color(0, 255, 0));
+			case SWITCH:
+				g.setColor(new Color(0, 0, 255));
 				break;
-			case SHOOT:
-				g.setColor(new Color(0, 255, 255));
+			case SCALE:
+				g.setColor(new Color(255, 0, 0));
 				break;
 			}
 

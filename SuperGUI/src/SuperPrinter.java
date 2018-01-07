@@ -39,12 +39,12 @@ public class SuperPrinter {
 			for (SuperAction a : point.getActions()) {
 				angleDiff = currAngle - Math.toDegrees(a.getAngle()); // -(destAngle - starAngle) angle -> bearing
 				currAngle = Math.toDegrees(a.getAngle());
-				if(a.getAction() == SuperEnum.SHOOT) {
-					angleDiff += 180;
-					currAngle += 180;
-					while(currAngle > 180) currAngle -= 360;
-					while(currAngle < -180) currAngle += 360;
-				}
+//				if(a.getAction() == SuperEnum.SHOOT) {
+//					angleDiff += 180;
+//					currAngle += 180;
+//					while(currAngle > 180) currAngle -= 360;
+//					while(currAngle < -180) currAngle += 360;
+//				}
 				while(angleDiff > 180) angleDiff -= 360;
 				while(angleDiff < -180) angleDiff += 360;
 				
@@ -56,13 +56,13 @@ public class SuperPrinter {
 				
 				// place gear/shoot
 				switch (a.getAction()) {
-				case GEAR:
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new GearCommand());\n");
-					System.out.println("Place Gear");
+				case SWITCH:
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new SwitchCommand());\n");
+					System.out.println("Place Switch");
 					break;
-				case SHOOT:
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new ShootCommand());\n");
-					System.out.println("Shoot");
+				case SCALE:
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new ScaleCommand());\n");
+					System.out.println("Place Scale");
 					break;
 				}
 			}
