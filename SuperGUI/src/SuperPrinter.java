@@ -96,7 +96,7 @@ public class SuperPrinter {
 	 * Writes the autoChooser file in the robot code
 	 */
 	public static void writeAutoChooser(){
-		if(!SuperGUI.WRITE_MAP)
+		if(!SuperGUI.WRITE_COMMAND)
 			return;
 		PrintWriter autoWriter;
 		try {

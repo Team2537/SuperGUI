@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,11 +32,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	private static final int cursorRadius = (int) (SuperGUI.ROBOT_DIAMETER/2*SuperGUI.SCALE); // pixels
 	private static final int toggleFollowCursorKey = KeyEvent.VK_SPACE;
-	private static final int printCourseKey = KeyEvent.VK_ENTER;
 	private static final int exitKey = KeyEvent.VK_ESCAPE;
 	private static final int relativeAngleToggle = KeyEvent.VK_R;
 	private static final int openSnapMenu = KeyEvent.VK_S;
 	private static final int deleteAll = KeyEvent.VK_C;
+	private static final int openMapKey = KeyEvent.VK_O;
+	private static final int printCourseKey = KeyEvent.VK_ENTER;
 	private static final int deleteLast = KeyEvent.VK_BACK_SPACE;
 
 	private Image field;
@@ -99,17 +101,28 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		}
 		if (k.getKeyCode() == toggleFollowCursorKey) followCursor = !followCursor;
 		if (k.getKeyCode() == relativeAngleToggle) relativeAngles = !relativeAngles;
+		if (k.getKeyCode() == openMapKey) {
+			final JFileChooser fc = new JFileChooser(SuperGUI.MAPS_DIRECTORY);
+			int i = fc.showOpenDialog(fc);
+			if(i == JFileChooser.APPROVE_OPTION) {
+				try {
+					File selectedFile = fc.getSelectedFile();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		if (k.getKeyCode() == printCourseKey) {
 			System.out.println("Course================" + startingPoint.getNumBots());
 			String mapName;
-			if(SuperGUI.WRITE_MAP) {
+			if(SuperGUI.WRITE_COMMAND) {
 				mapName = (String) JOptionPane.showInputDialog(jframe, "Enter map name:\n", "File Name",
 						JOptionPane.PLAIN_MESSAGE, null, null, "");
 				if (mapName != null) {
-					File fl = new File("src/org/usfirst/frc/team2537/maps/" + mapName + ".java");
+					File fl = new File("src/org/usfirst/frc/team2537/autocommands/" + mapName + ".java");
 					try {
 						BufferedWriter writer = new BufferedWriter(new FileWriter(fl));
-						writer.write("package org.usfirst.frc.team2537.maps;\n\n");
+						writer.write("package org.usfirst.frc.team2537.autocommands;\n\n");
 						writer.write("import org.usfirst.frc.team2537.robot.auto.AutoRotateCommand;\n");
 						writer.write("import org.usfirst.frc.team2537.robot.auto.CourseCorrect;\n");
 						writer.write("import org.usfirst.frc.team2537.robot.auto.GearCommand;\n\n");

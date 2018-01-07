@@ -13,10 +13,11 @@ import javax.swing.JFrame;
  * lclick - create robot
  * rclick - open SuperMenu (do some action)
  * space - stop turning to follow cursor, snap cursor to line. Useful for going backwards.
- * enter - print course
  * c - clear all points
  * bakaspace - remove latest point
  * s - open SuperSnapMenu (go to preset point)
+ * o - open map file
+ * enter - print course
  * esc - quit
  * 
  *
@@ -34,7 +35,9 @@ public class SuperGUI {
 	public static final double ROBOT_WIDTH = 29.0 / 12; // feet
 	public static final double ROBOT_DIAMETER = Math.sqrt(Math.pow(ROBOT_LENGTH, 2) + Math.pow(ROBOT_WIDTH, 2));
 	
-	public static final boolean WRITE_MAP = false; // write the code to a map file and generate autoChooser
+	public static final boolean WRITE_COMMAND = false; // write the code to a command and generate autoChooser
+	public static final boolean WRITE_MAP = false; // write the code to a readable map file
+	public static final String MAPS_DIRECTORY = "src/maps";
 	
 	public static final Color cursorColor = new Color(255, 0, 0);
 	
