@@ -25,8 +25,8 @@ public class SuperPrinter {
 		double destinationAngle = Math.toDegrees(point.getAngle());
 		try {
 			if (mapWriter != null) {
-				mapWriter.write("X" + (1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
-				mapWriter.write("Y" + (1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
+				mapWriter.write((1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
+				mapWriter.write((1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
 			}
 
 			
