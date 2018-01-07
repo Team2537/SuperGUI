@@ -21,6 +21,7 @@ import javax.swing.JFrame;
  * 
  *
  * @author Arden Zhang
+ * @author Andrew Wollack
  *
  */
 public class SuperGUI {

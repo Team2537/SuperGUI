@@ -62,7 +62,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		botTransparency = 255;
 		jframe = new JFrame();
 		menu = new SuperMenu(this);
-		snapMenu = new SuperSnapeMenu(this);
+		snapMenu = new SuperSnapMenu(this);
 	}
 
 	@Override
