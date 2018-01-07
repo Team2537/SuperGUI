@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
  */
 public class SuperPanel extends JPanel implements KeyListener, MouseMotionListener, MouseListener, MouseWheelListener, ActionListener {
 
-	private static final int mouseSize = 8; // pixels
+	private static final int cursorRadius = (int) (SuperGUI.ROBOT_DIAMETER/2*SuperGUI.SCALE); // pixels
 	private static final int toggleFollowCursorKey = KeyEvent.VK_SPACE;
 	private static final int printCourseKey = KeyEvent.VK_ENTER;
 	private static final int exitKey = KeyEvent.VK_ESCAPE;
@@ -75,7 +75,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		}
 
 		g.setColor(SuperGUI.cursorColor);
-		g.drawOval(mousePos.x - mouseSize, mousePos.y - mouseSize, mouseSize * 2, mouseSize * 2);
+		g.drawOval(mousePos.x - cursorRadius, mousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
 	}
 
 	private void quit() {
