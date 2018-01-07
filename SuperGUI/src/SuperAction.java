@@ -1,4 +1,8 @@
-
+/**
+ * Right Click Actions
+ * 
+ * if adding new right click actions, modify SuperEnum
+ */
 public class SuperAction {
 	private SuperEnum action;
 	private double angle;

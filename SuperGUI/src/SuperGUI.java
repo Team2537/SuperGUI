@@ -11,12 +11,12 @@ import javax.swing.JFrame;
  *
  * Keybindings:
  * lclick - create robot
- * rclick - gear/shoot
- * space - stop turning to follow cursor, snap cursor to line
+ * rclick - open SuperMenu (do some action)
+ * space - stop turning to follow cursor, snap cursor to line. Useful for going backwards.
  * enter - print course
  * c - clear all points
  * bakaspace - remove latest point
- * s - snap to mode
+ * s - open SuperSnapMenu (go to preset point)
  * esc - quit
  * 
  *

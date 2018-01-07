@@ -24,9 +24,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 /**
- * Panel
+ * Handles input
  *
- * @author Arden Zhang
  */
 public class SuperPanel extends JPanel implements KeyListener, MouseMotionListener, MouseListener, MouseWheelListener, ActionListener {
 

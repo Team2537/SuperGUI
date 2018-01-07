@@ -58,7 +58,7 @@ public class SuperPrinter {
 			}
 			
 			if(point.getNext() == null) {
-				printAutoChooser();
+				writeAutoChooser();
 				return;
 			}
 			
@@ -92,7 +92,10 @@ public class SuperPrinter {
 		printCourse(point.getNext(), destinationAngle, writer);
 	}
 	
-	public static void printAutoChooser(){
+	/**
+	 * Writes the autoChooser file in the robot code
+	 */
+	public static void writeAutoChooser(){
 		if(!SuperGUI.WRITE_MAP)
 			return;
 		PrintWriter autoWriter;

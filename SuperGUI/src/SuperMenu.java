@@ -3,6 +3,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+/**
+ * Right click menu
+ *
+ */
 public class SuperMenu extends JPopupMenu {
 	private JMenuItem[] enumSelections;
 	
