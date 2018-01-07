@@ -7,8 +7,8 @@ import java.io.UnsupportedEncodingException;
 
 public class SuperPrinter {
 
-	public static void printCourse(SuperPoint p, BufferedWriter writer) {
-		printCourse(p, Math.toDegrees(p.getAngle()), writer);
+	public static void printCourse(SuperPoint p, BufferedWriter commandWriter, BufferedWriter mapWriter) {
+		printCourse(p, Math.toDegrees(p.getAngle()), commandWriter, mapWriter);
 	}
 
 	/**
@@ -19,11 +19,17 @@ public class SuperPrinter {
 	 * @param startAngle
 	 *            - current angle (not bearing) in degrees
 	 */
-	public static void printCourse(SuperPoint point, double startAngle, BufferedWriter writer) {
+	public static void printCourse(SuperPoint point, double startAngle, BufferedWriter commandWriter, BufferedWriter mapWriter) {
 		if (point == null) throw new IllegalArgumentException("Null point");
 
 		double destinationAngle = Math.toDegrees(point.getAngle());
 		try {
+			if (mapWriter != null) {
+				mapWriter.write("X" + (1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
+				mapWriter.write("Y" + (1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
+			}
+
+			
 			double currAngle = startAngle;
 			double angleDiff;
 			for (SuperAction a : point.getActions()) {
@@ -40,18 +46,18 @@ public class SuperPrinter {
 				
 				// turn to command
 				if(angleDiff != 0){
-					if(writer != null) writer.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
 					System.out.println("Turn " + angleDiff);					
 				}
 				
 				// place gear/shoot
 				switch (a.getAction()) {
 				case GEAR:
-					if(writer != null) writer.write("\t\taddSequential(new GearCommand());\n");
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new GearCommand());\n");
 					System.out.println("Place Gear");
 					break;
 				case SHOOT:
-					if(writer != null) writer.write("\t\taddSequential(new ShootCommand());\n");
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new ShootCommand());\n");
 					System.out.println("Shoot");
 					break;
 				}
@@ -67,7 +73,7 @@ public class SuperPrinter {
 			while(angleDiff < -180) angleDiff += 360;
 
 			if (angleDiff != 0) {
-				if(writer != null) writer.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
+				if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
 				System.out.println("Turn " + angleDiff);
 			}
 			
@@ -79,7 +85,7 @@ public class SuperPrinter {
 			if (point.isBackwards()) distance = -distance;
 			
 			if (distance != 0) {
-				if(writer != null) writer.write("\t\taddSequential(new CourseCorrect(" + distance + "));\n");
+				if(commandWriter != null) commandWriter.write("\t\taddSequential(new CourseCorrect(" + distance + "));\n");
 				System.out.println("Drive " + distance);
 			}
 
@@ -89,7 +95,7 @@ public class SuperPrinter {
 		}
 		System.out.println();
 
-		printCourse(point.getNext(), destinationAngle, writer);
+		printCourse(point.getNext(), destinationAngle, commandWriter, mapWriter);
 	}
 	
 	/**

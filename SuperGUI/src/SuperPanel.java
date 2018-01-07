@@ -115,40 +115,58 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		if (k.getKeyCode() == printCourseKey) {
 			System.out.println("Course================" + startingPoint.getNumBots());
 			String mapName;
-			if(SuperGUI.WRITE_COMMAND) {
+			if(SuperGUI.WRITE_COMMAND || SuperGUI.WRITE_MAP) {
 				mapName = (String) JOptionPane.showInputDialog(jframe, "Enter map name:\n", "File Name",
-						JOptionPane.PLAIN_MESSAGE, null, null, "");
+						JOptionPane.PLAIN_MESSAGE, null, null, "");				
+			}
+			
+			BufferedWriter mapWriter = null;
+			if(SuperGUI.WRITE_MAP && mapName != null) {
+				File mapFile = new File(SuperGUI.MAPS_DIRECTORY + mapName + ".txt");
+				try {
+					mapWriter = new BufferedWriter(new FileWriter(mapFile));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(SuperGUI.WRITE_COMMAND) {
 				if (mapName != null) {
-					File fl = new File("src/org/usfirst/frc/team2537/autocommands/" + mapName + ".java");
+					File commandFile = new File(SuperGUI.COMMANDS_DIRECTORY + mapName + ".java");
 					try {
-						BufferedWriter writer = new BufferedWriter(new FileWriter(fl));
-						writer.write("package org.usfirst.frc.team2537.autocommands;\n\n");
-						writer.write("import org.usfirst.frc.team2537.robot.auto.AutoRotateCommand;\n");
-						writer.write("import org.usfirst.frc.team2537.robot.auto.CourseCorrect;\n");
-						writer.write("import org.usfirst.frc.team2537.robot.auto.GearCommand;\n\n");
-						writer.write("import edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
-						writer.write("public class " + mapName + " extends CommandGroup {\n");
-						writer.write("\tpublic " + mapName + "() {\n");
+						BufferedWriter commandWriter = new BufferedWriter(new FileWriter(commandFile));
+						commandWriter.write("package org.usfirst.frc.team2537.autocommands;\n\n");
+						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.AutoRotateCommand;\n");
+						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.CourseCorrect;\n");
+						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.GearCommand;\n\n");
+						commandWriter.write("import edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
+						commandWriter.write("public class " + mapName + " extends CommandGroup {\n");
+						commandWriter.write("\tpublic " + mapName + "() {\n");
 						
 						if(startingPoint.getPoint().x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2)
-							SuperPrinter.printCourse(startingPoint, 0, writer);
+							SuperPrinter.printCourse(startingPoint, 0, commandWriter, mapWriter);
 						else
-							SuperPrinter.printCourse(startingPoint, 180, writer);
+							SuperPrinter.printCourse(startingPoint, 180, commandWriter, mapWriter);
 						
-						writer.write("\t}\n");
-						writer.write("}\n");
-						writer.close();
+						commandWriter.write("\t}\n");
+						commandWriter.write("}\n");
+						commandWriter.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
 			} else {
 				if(startingPoint.getPoint().x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2)
-					SuperPrinter.printCourse(startingPoint, 0, null);
+					SuperPrinter.printCourse(startingPoint, 0, null, mapWriter);
 				else
-					SuperPrinter.printCourse(startingPoint, 180, null);				
+					SuperPrinter.printCourse(startingPoint, 180, null, mapWriter);				
 			}
 
+			try {
+				if(mapWriter != null) mapWriter.close();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 		if (k.getKeyCode() == exitKey) quit();
 		repaint();
@@ -291,6 +309,6 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	}
 
 	public void setRelativeAngles(boolean relativeAngles) {
-		this.relativeAngles = relativeAngles;
+		SuperPanel.relativeAngles = relativeAngles;
 	}
 }
