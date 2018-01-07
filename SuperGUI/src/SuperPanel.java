@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -16,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -75,7 +75,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			startingPoint.draw(g, botTransparency);
 		}
 
-		g.setColor(new Color(255, 255, 0));
+		g.setColor(SuperGUI.cursorColor);
 		g.drawOval(mousePos.x - mouseSize, mousePos.y - mouseSize, mouseSize * 2, mouseSize * 2);
 	}
 
