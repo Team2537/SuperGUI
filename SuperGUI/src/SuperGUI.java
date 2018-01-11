@@ -39,6 +39,9 @@ public class SuperGUI {
 	public static final boolean WRITE_MAP = true; // write the code to a readable map file
 	public static final String COMMANDS_DIRECTORY = "src/org/usfirst/frc/team2537/autocommands/";
 	public static final String MAPS_DIRECTORY = "src/maps/";
+
+	public static final String FIELD_IMAGE = "src/FIELD.png";
+	public static final String AUTOCHOOSER_LOCATION = "src/maps/AutoChooser.java"; // src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java
 	
 	public static final Color cursorColor = new Color(255, 0, 0);
 	

@@ -65,7 +65,7 @@ public class SuperPrinter {
 					System.out.println("Place Scale");
 					break;
 				case PICKUP:
-					if(writer != null) writer.write("\t\taddSequential(new PickupCommand());\n");
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new PickupCommand());\n");
 					System.out.println("Pickup cube");
 					break;
 				case ROTATE:
@@ -116,8 +116,8 @@ public class SuperPrinter {
 			return;
 		PrintWriter autoWriter;
 		try {
-			autoWriter = new PrintWriter("src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java", "UTF-8");
-			File dir = new File("src/org/usfirst/frc/team2537/maps/");
+			autoWriter = new PrintWriter(SuperGUI.AUTOCHOOSER_LOCATION, "UTF-8");
+			File dir = new File(SuperGUI.MAPS_DIRECTORY);
 			File[] mapsList =  dir.listFiles();
 			
 			autoWriter.write("package org.usfirst.frc.team2537.robot.auto;\n\n");
