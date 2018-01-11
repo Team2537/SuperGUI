@@ -273,6 +273,12 @@ public class SuperPoint {
 			case SCALE:
 				g.setColor(new Color(255, 0, 0));
 				break;
+			case PICKUP:
+				g.setColor(new Color(0, 255, 0));
+				break;
+			case ROTATE:
+				g.setColor(new Color(255, 255, 255));
+				break;
 			}
 
 			double arrowStart = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2; // distance of start of arrow from center

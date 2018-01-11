@@ -31,8 +31,8 @@ public class SuperGUI {
 	public static final double FIELD_WIDTH = 27; // feet
 	public static final int SCALE = 40; // px/ft
 
-	public static final double ROBOT_LENGTH = 33.0 / 12; // feet
-	public static final double ROBOT_WIDTH = 29.0 / 12; // feet
+	public static final double ROBOT_LENGTH = 33d / 12; // feet
+	public static final double ROBOT_WIDTH = 28d / 12; // feet
 	public static final double ROBOT_DIAMETER = Math.sqrt(Math.pow(ROBOT_LENGTH, 2) + Math.pow(ROBOT_WIDTH, 2));
 	
 	public static final boolean WRITE_COMMAND = false; // write the code to a command and generate autoChooser

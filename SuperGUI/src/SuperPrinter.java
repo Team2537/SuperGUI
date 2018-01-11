@@ -64,6 +64,12 @@ public class SuperPrinter {
 					if(commandWriter != null) commandWriter.write("\t\taddSequential(new ScaleCommand());\n");
 					System.out.println("Place Scale");
 					break;
+				case PICKUP:
+					if(writer != null) writer.write("\t\taddSequential(new PickupCommand());\n");
+					System.out.println("Pickup cube");
+					break;
+				case ROTATE:
+					break;
 				}
 			}
 			
