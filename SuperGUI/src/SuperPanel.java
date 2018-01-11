@@ -40,7 +40,9 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	private static final int openMapKey = KeyEvent.VK_O;
 	private static final int printCourseKey = KeyEvent.VK_ENTER;
 	private static final int deleteLast = KeyEvent.VK_BACK_SPACE;
-
+	
+	private static final String FIELD_IMAGE = "src/FIELD.png";
+	
 	private Image field;
 	private boolean followCursor;
 	private Point mousePos;
@@ -52,7 +54,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	public static boolean relativeAngles =false;
 
 	public SuperPanel() {
-		field = new ImageIcon("SuperGUI/FIELD.jpg").getImage();
+		field = new ImageIcon(FIELD_IMAGE).getImage().getScaledInstance((int) (SuperGUI.FIELD_LENGTH*SuperGUI.SCALE), -1, Image.SCALE_DEFAULT);
 		addKeyListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);

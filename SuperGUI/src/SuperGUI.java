@@ -27,7 +27,7 @@ import javax.swing.JFrame;
  */
 public class SuperGUI {
 
-	public static final double FIELD_LENGTH = 54+1.0/3; // feet
+	public static final double FIELD_LENGTH = 54; // feet
 	public static final double FIELD_WIDTH = 27; // feet
 	public static final int SCALE = 40; // px/ft
 
