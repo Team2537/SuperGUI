@@ -28,9 +28,11 @@ public class SuperPrinter {
 				mapWriter.write((1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
 				mapWriter.write((1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
 				mapWriter.write("" + point.isBackwards() + "\n");
+				for(SuperAction a : point.getActions()) {
+					mapWriter.write(a.toString() + "\n");
+				}
 				mapWriter.write('\n');
 			}
-
 			
 			double currAngle = startAngle;
 			double angleDiff;
