@@ -11,10 +11,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -30,6 +28,7 @@ import javax.swing.SwingUtilities;
  * Handles input
  *
  */
+@SuppressWarnings("serial")
 public class SuperPanel extends JPanel implements KeyListener, MouseMotionListener, MouseListener, MouseWheelListener, ActionListener {
 
 	private static final int cursorRadius = (int) (SuperGUI.ROBOT_DIAMETER/2*SuperGUI.SCALE); // pixels
@@ -107,24 +106,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			final JFileChooser fc = new JFileChooser(SuperGUI.MAPS_DIRECTORY);
 			int i = fc.showOpenDialog(fc);
 			if(i == JFileChooser.APPROVE_OPTION) {
-				try {
-					File selectedFile = fc.getSelectedFile();
-					BufferedReader fileReader = new BufferedReader(new FileReader(selectedFile));
-					startingPoint = null;
-					String line;
-					while((line = fileReader.readLine()) != null) {
-						if(startingPoint == null) {
-							startingPoint = new SuperPoint(new Point((int) (Double.parseDouble(line)*SuperGUI.SCALE), (int) (Double.parseDouble(fileReader.readLine())*SuperGUI.SCALE)));
-						} else {
-							Point tmp = new Point((int) (Double.parseDouble(line)*SuperGUI.SCALE), (int) (Double.parseDouble(fileReader.readLine())*SuperGUI.SCALE));
-							startingPoint.point(tmp);
-							startingPoint.add(tmp);
-						}
-					}
-					fileReader.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				File selectedFile = fc.getSelectedFile();
+				startingPoint = SuperReader.readCourse(selectedFile);
 			}
 		}
 		if (k.getKeyCode() == printCourseKey) {

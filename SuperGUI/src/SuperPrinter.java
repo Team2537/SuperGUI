@@ -27,6 +27,8 @@ public class SuperPrinter {
 			if (mapWriter != null) {
 				mapWriter.write((1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
 				mapWriter.write((1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
+				mapWriter.write("" + point.isBackwards() + "\n");
+				mapWriter.write('\n');
 			}
 
 			

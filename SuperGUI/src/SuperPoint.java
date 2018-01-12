@@ -59,7 +59,7 @@ public class SuperPoint {
 	}
 
 	/**
-	 * Makes the robot point towards a point
+	 * Makes the final robot point towards a point
 	 *
 	 * @param p
 	 *            - The point to point to
@@ -81,7 +81,7 @@ public class SuperPoint {
 
 		midpoint = new Point((p.x+this.p.x)/2,(p.y+this.p.y)/2);
 	}
-
+	
 	public double getAngle() {
 		return angle;
 	}
