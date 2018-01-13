@@ -3,6 +3,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+@SuppressWarnings("serial")
 public class SuperSnapMenu extends JPopupMenu {
 	private JMenuItem[] snapSelections;
 	

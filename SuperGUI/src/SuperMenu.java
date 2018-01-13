@@ -7,6 +7,7 @@ import javax.swing.JPopupMenu;
  * Right click menu
  *
  */
+@SuppressWarnings("serial")
 public class SuperMenu extends JPopupMenu {
 	private JMenuItem[] enumSelections;
 	
