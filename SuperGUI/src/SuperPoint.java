@@ -322,7 +322,7 @@ public class SuperPoint {
 			}
 			at.rotate(2*Math.PI-angle, (midpoint.x+p.x)/2, (midpoint.y+p.y)/2);
 			g2.setTransform(at);
-			g2.setColor(Color.MAGENTA);
+			g2.setColor(Color.WHITE);
 			if(SuperPanel.relativeAngles){
 				g2.drawString(df.format((angle-startAngle)*180/Math.PI)+Character.toString((char) 176), (midpoint.x+p.x)/2, (midpoint.y+p.y)/2);
 			}
@@ -331,8 +331,8 @@ public class SuperPoint {
 			}
 			g2.setTransform(defaultTransform);
 			
-			g2.setColor(new Color(255, 0, 0, 200));
-			g2.setStroke(new BasicStroke(2));
+			g2.setColor(new Color(0, 0, 0, 25));
+			g2.setStroke(new BasicStroke((float) (SuperGUI.ROBOT_WIDTH*SuperGUI.SCALE)));
 			if (angle == Math.PI / 2 || angle == -Math.PI / 2) {
 				g2.draw(new Line2D.Float(p.x, 0, p.x, (int) (SuperGUI.FIELD_WIDTH * SuperGUI.SCALE)));
 			} else {
