@@ -186,7 +186,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		if(startingPoint != null && !startingPoint.validMove(m.getPoint())) return;
+		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint())) return;
 		
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();

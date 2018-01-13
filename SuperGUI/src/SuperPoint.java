@@ -154,9 +154,14 @@ public class SuperPoint {
 	 * @param nextPoint
 	 * @return
 	 */
-	public boolean validMove(Point nextPoint) {
-		if(next != null) return next.validMove(nextPoint);
+	public boolean isValidMove(Point nextPoint) {
+		if(next != null) return next.isValidMove(nextPoint);
 		double angle = Math.atan2(-nextPoint.y + this.p.y, nextPoint.x - this.p.x);
+
+		// Use the front/back of the robot instead of the center
+		nextPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+		nextPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		
 		Polygon path = new Polygon(new int[] {
 				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
 				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
