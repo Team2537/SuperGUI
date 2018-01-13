@@ -119,7 +119,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			}
 			
 			BufferedWriter mapWriter = null;
-			if(SuperGUI.WRITE_MAP && mapName != null) {
+			if(SuperGUI.WRITE_MAP && mapName != null && mapName.length() > 0) {
 				File mapFile = new File(SuperGUI.MAPS_DIRECTORY + mapName + ".txt");
 				try {
 					mapWriter = new BufferedWriter(new FileWriter(mapFile));

@@ -17,8 +17,8 @@ public class SuperReader {
 			while ((line = fileReader.readLine()) != null) {
 				x = (int) (Double.parseDouble(line) * SuperGUI.SCALE);
 				y = (int) (Double.parseDouble(fileReader.readLine()) * SuperGUI.SCALE);
-				
-				
+
+
 				Point tmp = new Point(x, y);
 				if(!backwards)
 					start.point(tmp);
@@ -30,7 +30,10 @@ public class SuperReader {
 				startx = x;
 				starty = y;
 				backwards = Boolean.parseBoolean(fileReader.readLine());
-				fileReader.readLine();
+				
+				while((line = fileReader.readLine()).length() > 0) {
+					start.addAction(SuperAction.readSuperAction(line));
+				}
 			}
 			fileReader.close();
 		} catch (Exception e) {

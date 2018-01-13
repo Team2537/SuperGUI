@@ -338,6 +338,10 @@ public class SuperPoint {
 		}
 	}
 
+	/**
+	 * Adds an action to the final robot
+	 * @param a
+	 */
 	public void addAction(SuperAction a) {
 		if (next == null) actions.add(a);
 		else next.addAction(a);
