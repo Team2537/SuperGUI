@@ -148,6 +148,40 @@ public class SuperPoint {
 	}
 
 	/**
+	 * Returns if placing a robot in this position would be a valid move.
+	 * A valid move is defined as a move where the robot would not run into any objects
+	 * 
+	 * @param nextPoint
+	 * @return
+	 */
+	public boolean validMove(Point nextPoint) {
+		if(next != null) return next.validMove(nextPoint);
+		double angle = Math.atan2(-nextPoint.y + this.p.y, nextPoint.x - this.p.x);
+		Polygon path = new Polygon(new int[] {
+				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
+				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
+				nextPoint.x
+						+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
+				nextPoint.x
+						+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)) },
+
+				new int[] { this.p.y
+						- (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.sin(angle + Math.PI / 2)),
+						this.p.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+								* Math.sin(angle - Math.PI / 2)),
+						nextPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+								* Math.sin(angle - Math.PI / 2)),
+						nextPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+								* Math.sin(angle + Math.PI / 2)) },
+
+				4);
+		for(SuperObstacle o : SuperObstacle.values()) {
+			if(path.intersects(o.shape)) return false;			
+		}
+		return true;
+	}
+	
+	/**
 	 * removes a robot at an index > 0
 	 *
 	 * @param index

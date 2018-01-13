@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -33,13 +34,14 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	private static final int cursorRadius = (int) (SuperGUI.ROBOT_DIAMETER/2*SuperGUI.SCALE); // pixels
 	private static final int toggleFollowCursorKey = KeyEvent.VK_SPACE;
+	private static final int toggleObstacleVisbilityKey = KeyEvent.VK_H;
 	private static final int exitKey = KeyEvent.VK_ESCAPE;
-	private static final int relativeAngleToggle = KeyEvent.VK_R;
-	private static final int openSnapMenu = KeyEvent.VK_S;
-	private static final int deleteAll = KeyEvent.VK_C;
+	private static final int relativeAngleToggleKey = KeyEvent.VK_R;
+	private static final int openSnapMenuKey = KeyEvent.VK_S;
+	private static final int deleteAllKey = KeyEvent.VK_C;
 	private static final int openMapKey = KeyEvent.VK_O;
 	private static final int printCourseKey = KeyEvent.VK_ENTER;
-	private static final int deleteLast = KeyEvent.VK_BACK_SPACE;
+	private static final int deleteLastKey = KeyEvent.VK_BACK_SPACE;
 		
 	private Image field;
 	private boolean followCursor;
@@ -49,6 +51,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	private JFrame jframe;
 	private SuperMenu menu;
 	private JPopupMenu snapMenu;
+	private boolean obstaclesVisible = true;
 	public static boolean relativeAngles =false;
 
 	public SuperPanel() {
@@ -71,6 +74,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(field, 0, 0, null);
+		g.setColor(Color.BLACK);
+		if(obstaclesVisible) {
+			for(SuperObstacle o : SuperObstacle.values()) {
+				g.fillRect(o.shape.x, o.shape.y, o.shape.width, o.shape.height);
+			}			
+		}
 
 		if (startingPoint != null) {
 			if (followCursor && !menu.isVisible()) startingPoint.point(mousePos);
@@ -87,21 +96,22 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if(k.getKeyCode() == deleteAll){
+		if(k.getKeyCode() == deleteAllKey){
 			startingPoint = null;
 		}
-		if(k.getKeyCode() == deleteLast){
+		if(k.getKeyCode() == deleteLastKey){
 			if(startingPoint!= null){
 				startingPoint.removeFinalSuperPoint();
 			}
 		}
-		if(k.getKeyCode() == openSnapMenu){
+		if(k.getKeyCode() == openSnapMenuKey){
 
 			snapMenu.show(k.getComponent(),mousePos.x,mousePos.y);
 			
 		}
 		if (k.getKeyCode() == toggleFollowCursorKey) followCursor = !followCursor;
-		if (k.getKeyCode() == relativeAngleToggle) relativeAngles = !relativeAngles;
+		if (k.getKeyCode() == toggleObstacleVisbilityKey) obstaclesVisible = !obstaclesVisible;
+		if (k.getKeyCode() == relativeAngleToggleKey) relativeAngles = !relativeAngles;
 		if (k.getKeyCode() == openMapKey) {
 			final JFileChooser fc = new JFileChooser(SuperGUI.MAPS_DIRECTORY);
 			int i = fc.showOpenDialog(fc);
@@ -177,6 +187,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
+		if(startingPoint != null && !startingPoint.validMove(new Point(m.getX(), m.getY()))) return;
+		
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
 

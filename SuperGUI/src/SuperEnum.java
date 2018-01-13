@@ -6,7 +6,7 @@
 public enum SuperEnum {
 	SWITCH("SWITCH"), SCALE("SCALE"), PICKUP("PICKUP"), ROTATE("ROTATE");
 	
-	String name;
+	final String name;
 	private SuperEnum(String name){
 		this.name = name;
 	}
