@@ -1,13 +1,12 @@
 import java.awt.Rectangle;
 
 public enum SuperObstacle {
-	RED_SWITCH(5, 5, 5, 5, "RED SWITCH"),
-	SCALE(20, 10, 4, 4, "SCALE");
+	RED_SWITCH(14 - 7d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12),
+	SCALE(25, 6, 4, 15),
+	BLUE_SWITCH(113d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12);
 	
 	final Rectangle shape;
-	final String name;
-	private SuperObstacle(double x, double y, double width, double height, String name) {
+	private SuperObstacle(double x, double y, double width, double height) {
 		shape = new Rectangle((int) (x*SuperGUI.SCALE), (int) (y*SuperGUI.SCALE), (int) (width*SuperGUI.SCALE), (int) (height*SuperGUI.SCALE));
-		this.name = name;
 	}
 }

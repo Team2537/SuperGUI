@@ -1,8 +1,4 @@
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -12,12 +8,14 @@ import javax.swing.JFrame;
  * When customizing for specific games:
  *  - Add robot actions in SuperEnum (eg. rotate, place gear)
  *  - Customize those actions in the switch statements in SuperPrinter and SuperPoint
+ *  - Customize obstacles and their positions in SuperObstacle
  *  - Customize the preset positions in SuperSnapEnum
  *
  * Keybindings:
  * lclick - create robot
  * rclick - open SuperMenu (do some action)
  * space - stop turning to follow cursor, snap cursor to line. Useful for going backwards.
+ * h - hide obstacles
  * c - clear all points
  * bakaspace - remove latest point
  * s - open SuperSnapMenu (go to preset point)
@@ -50,14 +48,15 @@ public class SuperGUI {
 	public static final String AUTOCHOOSER_LOCATION = "src/maps/AutoChooser.java"; // src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java
 	
 	public static final Color cursorColor = new Color(255, 0, 0);
+	public static final Color obstacleColor = new Color(0, 0, 0, 200);
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("SuperGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-		frame.getContentPane().setCursor(blankCursor);
+//		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+//		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+//		frame.getContentPane().setCursor(blankCursor);
 
 		SuperPanel panel = new SuperPanel();
 

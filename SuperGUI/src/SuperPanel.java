@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -44,7 +43,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	private static final int deleteLastKey = KeyEvent.VK_BACK_SPACE;
 		
 	private Image field;
-	private boolean followCursor;
+	private boolean followCursor = true;
 	private Point mousePos;
 	private SuperPoint startingPoint;
 	private int botTransparency;
@@ -62,7 +61,6 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		addMouseWheelListener(this);
 		setPreferredSize(new Dimension((int) (SuperGUI.FIELD_LENGTH * SuperGUI.SCALE),
 				(int) (SuperGUI.FIELD_WIDTH * SuperGUI.SCALE)));
-		followCursor = true;
 		mousePos = new Point(0, 0);
 		botTransparency = 255;
 		jframe = new JFrame();
@@ -74,7 +72,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(field, 0, 0, null);
-		g.setColor(Color.BLACK);
+		
+		g.setColor(SuperGUI.obstacleColor);
 		if(obstaclesVisible) {
 			for(SuperObstacle o : SuperObstacle.values()) {
 				g.fillRect(o.shape.x, o.shape.y, o.shape.width, o.shape.height);
@@ -187,7 +186,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		if(startingPoint != null && !startingPoint.validMove(new Point(m.getX(), m.getY()))) return;
+		if(startingPoint != null && !startingPoint.validMove(m.getPoint())) return;
 		
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
@@ -195,6 +194,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		if (startingPoint != null && !followCursor){
 			mousePos = snap(mousePos);
 		}
+		
 		if(startingPoint == null){
 			if(mousePos.x < SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2)
 				mousePos.x = (int) (SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
@@ -239,12 +239,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			y = -slope * x + 0;
 			result = new Point((int) (x + startingPoint.getFinalPoint().x), (int) (y + startingPoint.getFinalPoint().y));
 		}
-		
-		if(result.distance(startingPoint.getFinalPoint()) <= SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/5){
-			return (Point) startingPoint.getFinalPoint().clone();
-		}else{
-			return result;
-		}
+		return result;
 	}
 
 	@Override
