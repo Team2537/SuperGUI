@@ -2,9 +2,9 @@ import java.awt.Polygon;
 import java.awt.geom.Path2D;
 
 public enum SuperObstacle {
-	RED_SWITCH(14 - 7d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12),
+	RED_SWITCH(14 - 7d/3, 13.5 - 12.855/2, 14d/3, 12.855),
 	SCALE(25, 8, 4, 11),
-	BLUE_SWITCH(113d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12),
+	BLUE_SWITCH(40 - 7d/3, 13.5 - 12.855/2, 14d/3, 12.855),
 
 	TOP_LEFT_CORNER(0, SuperGUI.CORNER_WIDTH, SuperGUI.CORNER_LENGTH, 0, SuperGUI.FENCE_WIDTH),
 	TOP_RIGHT_CORNER(SuperGUI.FIELD_LENGTH - SuperGUI.CORNER_LENGTH, 0, SuperGUI.FIELD_LENGTH, SuperGUI.CORNER_WIDTH, SuperGUI.FENCE_WIDTH),
