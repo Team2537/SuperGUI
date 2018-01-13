@@ -2,7 +2,7 @@ import java.awt.Rectangle;
 
 public enum SuperObstacle {
 	RED_SWITCH(14 - 7d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12),
-	SCALE(25, 6, 4, 15),
+	SCALE(25, 8, 4, 11),
 	BLUE_SWITCH(113d/3, 7 + 5d/48, 14d/3, 12 + 9.5/12);
 	
 	final Rectangle shape;
