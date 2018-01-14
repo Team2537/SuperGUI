@@ -345,7 +345,7 @@ public class SuperPoint {
 					new int[] {
 							(int) (position.y - arrowStart * Math.sin(a.getAngle())),
 							(int) (position.y - arrowEnd * Math.sin(a.getAngle())),
-							(int) (position.y - arrowEnd * Math.sin(a.getAngle()) + (arrowEnd - arrowStart) / 2 * Math.sin(a.getAngle() + Math.PI * 5 / 6)),
+							(int) (position.y - arrowEnd * Math.sin(a.getAngle()) - (arrowEnd - arrowStart) / 2 * Math.sin(a.getAngle() + Math.PI * 5 / 6)),
 							(int) (position.y - arrowEnd * Math.sin(a.getAngle())),
 							(int) (position.y - arrowEnd * Math.sin(a.getAngle()) - (arrowEnd - arrowStart) / 2 * Math.sin(a.getAngle() - Math.PI * 5 / 6)) },
 					5);
