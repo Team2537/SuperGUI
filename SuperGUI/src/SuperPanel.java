@@ -43,7 +43,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	private static final int deleteLastKey = KeyEvent.VK_BACK_SPACE;
 		
 	private Image field;
-	private boolean followCursor = true;
+	private boolean followCursor = false;
 	private Point mousePos;
 	private SuperPoint startingPoint;
 	private int botTransparency;
@@ -186,7 +186,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint())) return;
+		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint(), followCursor)) return;
 		
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
@@ -194,17 +194,10 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		if (startingPoint != null && !followCursor){
 			mousePos = snap(mousePos);
 		}
-		
+
 		if(startingPoint == null){
-			if(mousePos.x < SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2)
-				mousePos.x = (int) (SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
-			if(mousePos.x > (SuperGUI.FIELD_LENGTH-SuperGUI.ROBOT_LENGTH/2)*SuperGUI.SCALE)
-				mousePos.x = (int) ((SuperGUI.FIELD_LENGTH-SuperGUI.ROBOT_LENGTH/2)*SuperGUI.SCALE);
-			if(mousePos.y < SuperGUI.ROBOT_WIDTH*SuperGUI.SCALE/2)
-				mousePos.y = (int) (SuperGUI.ROBOT_WIDTH*SuperGUI.SCALE/2);
-			if(mousePos.y > (SuperGUI.FIELD_WIDTH-SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE)
-				mousePos.y = (int) ((SuperGUI.FIELD_WIDTH-SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE);	
-			
+			if(mousePos.x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2) mousePos.x = (int) (SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
+			else mousePos.x = (int) (SuperGUI.FIELD_LENGTH*SuperGUI.SCALE - SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
 		}
 
 		
@@ -247,8 +240,10 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		if (SwingUtilities.isRightMouseButton(m)) {
 			menu.show(m.getComponent(), m.getX(), m.getY());
 		} else {
-			if (startingPoint == null)
+			if (startingPoint == null) {
 				startingPoint = new SuperPoint(mousePos);
+				startingPoint.point(new Point(m.getX() + 5, m.getY()));
+			}
 			else {
 				startingPoint.add(mousePos);
 				followCursor = true;

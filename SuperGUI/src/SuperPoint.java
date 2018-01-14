@@ -154,14 +154,16 @@ public class SuperPoint {
 	 * @param nextPoint
 	 * @return
 	 */
-	public boolean isValidMove(Point nextPoint) {
-		if(next != null) return next.isValidMove(nextPoint);
+	public boolean isValidMove(Point nextPoint, boolean followingCursor) {
+		if(next != null) return next.isValidMove(nextPoint, followingCursor);
 		double angle = Math.atan2(-nextPoint.y + this.p.y, nextPoint.x - this.p.x);
 
 		// Use the front/back of both robots instead of the center
-		Point startPoint = new Point();
-		startPoint.x = (int) (p.x - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
-		startPoint.y = (int) (p.y + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		Point startPoint = new Point(this.p);
+		if(followingCursor) {
+			startPoint.x = (int) (p.x - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+			startPoint.y = (int) (p.y + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));			
+		}
 		Point endPoint = new Point();
 		endPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
 		endPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
