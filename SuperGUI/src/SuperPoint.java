@@ -158,31 +158,43 @@ public class SuperPoint {
 		if(next != null) return next.isValidMove(nextPoint);
 		double angle = Math.atan2(-nextPoint.y + this.p.y, nextPoint.x - this.p.x);
 
-		// Use the front/back of the robot instead of the center
-		nextPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
-		nextPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
-		
+		// Use the front/back of both robots instead of the center
+		Point startPoint = new Point();
+		startPoint.x = (int) (p.x - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+		startPoint.y = (int) (p.y + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		Point endPoint = new Point();
+		endPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+		endPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+
 		Polygon path = new Polygon(new int[] {
-				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
-				this.p.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
-				nextPoint.x
+				startPoint.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
+				startPoint.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
+				endPoint.x
 						+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
-				nextPoint.x
+				endPoint.x
 						+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)) },
 
-				new int[] { this.p.y
-						- (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.sin(angle + Math.PI / 2)),
-						this.p.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-								* Math.sin(angle - Math.PI / 2)),
-						nextPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-								* Math.sin(angle - Math.PI / 2)),
-						nextPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-								* Math.sin(angle + Math.PI / 2)) },
+				new int[] {
+					startPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.sin(angle + Math.PI / 2)),
+					startPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+							* Math.sin(angle - Math.PI / 2)),
+					endPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+							* Math.sin(angle - Math.PI / 2)),
+					endPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
+							* Math.sin(angle + Math.PI / 2)) },
 
 				4);
+
+		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {
 			if(path.intersects(o.shape)) return false;			
 		}
+		
+		// Border collision
+		if(path.intersects(0, -1, SuperGUI.FIELD_LENGTH*SuperGUI.SCALE, 1)) return false;
+		if(path.intersects(-1, 0, 1, SuperGUI.FIELD_WIDTH*SuperGUI.SCALE)) return false;
+		if(path.intersects(0, SuperGUI.FIELD_WIDTH*SuperGUI.SCALE, SuperGUI.FIELD_LENGTH*SuperGUI.SCALE, 1)) return false;
+		if(path.intersects(SuperGUI.FIELD_LENGTH*SuperGUI.SCALE, 0, 1, SuperGUI.FIELD_WIDTH*SuperGUI.SCALE)) return false;
 		return true;
 	}
 	
