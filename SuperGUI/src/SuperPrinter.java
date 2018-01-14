@@ -92,7 +92,7 @@ public class SuperPrinter {
 			if (point.isBackwards()) distance = -distance;
 
 			if (distance != 0) {
-				if(commandWriter != null) commandWriter.write("\t\taddSequential(new CourseCorrect(" + distance + "));\n");
+				if(commandWriter != null) commandWriter.write("\t\taddSequential(new DriveStraightCommand(" + distance + "));\n");
 				System.out.println("Drive " + distance);
 			}
 
