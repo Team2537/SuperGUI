@@ -41,7 +41,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	private static final int openMapKey = KeyEvent.VK_O;
 	private static final int printCourseKey = KeyEvent.VK_ENTER;
 	private static final int deleteLastKey = KeyEvent.VK_BACK_SPACE;
-		
+
 	private Image field;
 	private boolean followCursor = false;
 	private Point mousePos;
@@ -72,12 +72,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(field, 0, 0, null);
-		
+
 		g.setColor(SuperGUI.obstacleColor);
 		if(obstaclesVisible) {
 			for(SuperObstacle o : SuperObstacle.values()) {
 				g.fillPolygon(o.shape);
-			}			
+			}
 		}
 
 		if (startingPoint != null) {
@@ -99,14 +99,21 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			startingPoint = null;
 		}
 		if(k.getKeyCode() == deleteLastKey){
-			if(startingPoint!= null){
+			if(startingPoint != null){
 				startingPoint.removeFinalSuperPoint();
 			}
 		}
 		if(k.getKeyCode() == openSnapMenuKey){
-
-			snapMenu.show(k.getComponent(),mousePos.x,mousePos.y);
-			
+			if(startingPoint == null) {
+				for(SuperSnapEnum s : SuperSnapEnum.values()) {
+					if(s.isStartingPos) {
+						snapMenu.show(k.getComponent(),mousePos.x,mousePos.y);
+						break;
+					}
+				}
+			} else {
+				snapMenu.show(k.getComponent(),mousePos.x,mousePos.y);
+			}
 		}
 		if (k.getKeyCode() == toggleFollowCursorKey) followCursor = !followCursor;
 		if (k.getKeyCode() == toggleObstacleVisbilityKey) obstaclesVisible = !obstaclesVisible;
@@ -124,9 +131,9 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			String mapName;
 			if(SuperGUI.WRITE_COMMAND || SuperGUI.WRITE_MAP) {
 				mapName = (String) JOptionPane.showInputDialog(jframe, "Enter map name:\n", "File Name",
-						JOptionPane.PLAIN_MESSAGE, null, null, "");				
+						JOptionPane.PLAIN_MESSAGE, null, null, "");
 			}
-			
+
 			BufferedWriter mapWriter = null;
 			if(SuperGUI.WRITE_MAP && mapName != null && mapName.length() > 0) {
 				File mapFile = new File(SuperGUI.MAPS_DIRECTORY + mapName + ".txt");
@@ -136,7 +143,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 					e.printStackTrace();
 				}
 			}
-			
+
 			if(SuperGUI.WRITE_COMMAND) {
 				if (mapName != null) {
 					File commandFile = new File(SuperGUI.COMMANDS_DIRECTORY + mapName + ".java");
@@ -149,12 +156,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 						commandWriter.write("import edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
 						commandWriter.write("public class " + mapName + " extends CommandGroup {\n");
 						commandWriter.write("\tpublic " + mapName + "() {\n");
-						
+
 						if(startingPoint.getPoint().x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2)
 							SuperPrinter.printCourse(startingPoint, 0, commandWriter, mapWriter);
 						else
 							SuperPrinter.printCourse(startingPoint, 180, commandWriter, mapWriter);
-						
+
 						commandWriter.write("\t}\n");
 						commandWriter.write("}\n");
 						commandWriter.close();
@@ -166,7 +173,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 				if(startingPoint.getPoint().x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2)
 					SuperPrinter.printCourse(startingPoint, 0, null, mapWriter);
 				else
-					SuperPrinter.printCourse(startingPoint, 180, null, mapWriter);				
+					SuperPrinter.printCourse(startingPoint, 180, null, mapWriter);
 			}
 
 			try {
@@ -187,7 +194,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	@Override
 	public void mouseMoved(MouseEvent m) {
 		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint(), followCursor)) return;
-		
+
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
 
@@ -205,7 +212,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			if(mousePos.y > (SuperGUI.FIELD_WIDTH - SuperGUI.CORNER_WIDTH - SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE) mousePos.y = (int) ((SuperGUI.FIELD_WIDTH - SuperGUI.CORNER_WIDTH - SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE);
 		}
 
-		
+
 		if(startingPoint != null && !menu.isVisible()){
 			startingPoint.updateFinalDistance(mousePos);
 		}
@@ -292,17 +299,25 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			for(int i = 0 ; i<SuperEnum.values().length;i++){
 				if(e.getActionCommand().equals(SuperEnum.values()[i].name)){
 					startingPoint.addAction(new SuperAction(SuperEnum.values()[i], angle));
+					repaint();
+					return;
 				}
 			}
 		}
-		for(int i = 0 ; i<SuperSnapEnum.values().length;i++){
-			if(e.getActionCommand().equals(SuperSnapEnum.values()[i].name)){
-				if (startingPoint == null)
-					startingPoint = new SuperPoint(SuperSnapEnum.values()[i].p);
-				else {
-					startingPoint.point(SuperSnapEnum.values()[i].p);
-					startingPoint.add(SuperSnapEnum.values()[i].p);
-					followCursor = true;
+
+		for(SuperSnapEnum s : SuperSnapEnum.values()){
+			if(e.getActionCommand().equals(s.name)){
+				if (startingPoint == null) {
+					if(s.isStartingPos)	startingPoint = new SuperPoint(s.point);
+					else break;
+				} else {
+					if(startingPoint.isValidMove(s.point, true)) {
+						startingPoint.point(s.point);
+						startingPoint.add(s.point);
+						followCursor = true;
+					} else {
+						break;
+					}
 				}
 			}
 		}

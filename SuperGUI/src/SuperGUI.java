@@ -6,6 +6,7 @@ import javax.swing.JFrame;
  * Creates an interactive gui to plan robot actions
  *
  * When customizing for specific games:
+ *  - Confirm field and robot dimensions are correct
  *  - Add robot actions in SuperEnum (eg. rotate, place gear)
  *  - Customize those actions in the switch statements in SuperPrinter and SuperPoint
  *  - Customize obstacles and their positions in SuperObstacle
