@@ -254,7 +254,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		} else {
 			if (startingPoint == null) {
 				startingPoint = new SuperPoint(mousePos);
-				startingPoint.point(new Point(m.getX() + 5, m.getY()));
+				if(mousePos.x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2) startingPoint.point(new Point(mousePos.x + 5, mousePos.y));
+				else startingPoint.point(new Point(mousePos.x - 5, mousePos.y));
 			}
 			else {
 				startingPoint.add(mousePos);
