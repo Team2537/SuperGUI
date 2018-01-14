@@ -33,6 +33,7 @@ public class SuperGUI {
 
 	public static final double FIELD_LENGTH = 54; // feet
 	public static final double FIELD_WIDTH = 27; // feet
+	public static final double CORNER_WIDTH = (FIELD_WIDTH-22)/2; // feet
 	public static final int SCALE = 40; // px/ft
 
 	public static final double ROBOT_LENGTH = 33d / 12; // feet

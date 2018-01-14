@@ -76,7 +76,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		g.setColor(SuperGUI.obstacleColor);
 		if(obstaclesVisible) {
 			for(SuperObstacle o : SuperObstacle.values()) {
-				g.fillRect(o.shape.x, o.shape.y, o.shape.width, o.shape.height);
+				g.fillPolygon(o.shape);
 			}			
 		}
 
@@ -196,8 +196,13 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		}
 
 		if(startingPoint == null){
+			// Start with back to alliance station wall
 			if(mousePos.x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2) mousePos.x = (int) (SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
 			else mousePos.x = (int) (SuperGUI.FIELD_LENGTH*SuperGUI.SCALE - SuperGUI.ROBOT_LENGTH*SuperGUI.SCALE/2);
+
+			// Avoid corners
+			if(mousePos.y < (SuperGUI.CORNER_WIDTH + SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE) mousePos.y = (int) ((SuperGUI.CORNER_WIDTH + SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE);
+			if(mousePos.y > (SuperGUI.FIELD_WIDTH - SuperGUI.CORNER_WIDTH - SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE) mousePos.y = (int) ((SuperGUI.FIELD_WIDTH - SuperGUI.CORNER_WIDTH - SuperGUI.ROBOT_WIDTH/2)*SuperGUI.SCALE);
 		}
 
 		

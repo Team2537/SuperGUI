@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -168,7 +169,7 @@ public class SuperPoint {
 		endPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
 		endPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
 
-		Polygon path = new Polygon(new int[] {
+		Area path = new Area(new Polygon(new int[] {
 				startPoint.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
 				startPoint.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
 				endPoint.x
@@ -185,11 +186,13 @@ public class SuperPoint {
 					endPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
 							* Math.sin(angle + Math.PI / 2)) },
 
-				4);
+				4));
 
 		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {
-			if(path.intersects(o.shape)) return false;			
+			Area a = new Area(o.shape);
+			a.intersect(path);
+			if(!a.isEmpty()) return false;
 		}
 		
 		// Border collision
