@@ -193,7 +193,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint(), followCursor)) return;
+		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint(), followCursor, !obstaclesVisible)) return;
 
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
@@ -253,11 +253,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			menu.show(m.getComponent(), m.getX(), m.getY());
 		} else {
 			if (startingPoint == null) {
+				followCursor = false;
 				startingPoint = new SuperPoint(mousePos);
 				if(mousePos.x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2) startingPoint.point(new Point(mousePos.x + 5, mousePos.y));
 				else startingPoint.point(new Point(mousePos.x - 5, mousePos.y));
 			}
-			else {
+			else if (startingPoint.isValidMove(mousePos, true, false)){
 				startingPoint.add(mousePos);
 				followCursor = true;
 			}
@@ -312,7 +313,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 					if(s.isStartingPos)	startingPoint = new SuperPoint(s.point);
 					else break;
 				} else {
-					if(startingPoint.isValidMove(s.point, true)) {
+					if(startingPoint.isValidMove(s.point, true, false)) {
 						startingPoint.point(s.point);
 						startingPoint.add(s.point);
 						followCursor = true;

@@ -155,8 +155,8 @@ public class SuperPoint {
 	 * @param nextPoint
 	 * @return
 	 */
-	public boolean isValidMove(Point nextPoint, boolean followingCursor) {
-		if(next != null) return next.isValidMove(nextPoint, followingCursor);
+	public boolean isValidMove(Point nextPoint, boolean followingCursor, boolean botOnly) {
+		if(next != null) return next.isValidMove(nextPoint, followingCursor, botOnly);
 		double angle = Math.atan2(-nextPoint.y + this.position.y, nextPoint.x - this.position.x);
 
 		// Use the front/back of both robots instead of the center
@@ -166,8 +166,13 @@ public class SuperPoint {
 			startPoint.y = (int) (position.y + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
 		}
 		Point endPoint = new Point();
-		endPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
-		endPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		if(!botOnly) {
+			endPoint.x = (int) (nextPoint.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+			endPoint.y = (int) (nextPoint.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		} else {
+			endPoint.x = (int) (position.x + SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.cos(angle));
+			endPoint.y = (int) (position.y - SuperGUI.ROBOT_LENGTH/2 * SuperGUI.SCALE * Math.sin(angle));
+		}
 
 		Area path = new Area(new Polygon(
 				new int[] {
