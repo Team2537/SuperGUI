@@ -4,8 +4,12 @@
  *
  */
 public enum SuperEnum {
-	SWITCH("SWITCH"), SCALE("SCALE"), PICKUP("PICKUP"), ROTATE("ROTATE");
-	
+	SWITCH("SWITCH"),
+	SCALE("SCALE"),
+	PICKUP("PICKUP"),
+	ROTATE("ROTATE"),
+	/* ACTION("ACTION NAME") */;
+
 	final String name;
 	private SuperEnum(String name){
 		this.name = name;
