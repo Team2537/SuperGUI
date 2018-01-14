@@ -193,14 +193,14 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		if(startingPoint != null && !startingPoint.isValidMove(m.getPoint(), followCursor, !obstaclesVisible)) return;
-
 		mousePos.x = m.getX();
 		mousePos.y = m.getY();
 
 		if (startingPoint != null && !followCursor){
 			mousePos = snap(mousePos);
 		}
+
+		if(startingPoint != null && !startingPoint.isValidMove(mousePos, followCursor, !obstaclesVisible)) return;
 
 		if(startingPoint == null){
 			// Start with back to alliance station wall
