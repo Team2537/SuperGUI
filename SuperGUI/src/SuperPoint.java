@@ -242,44 +242,23 @@ public class SuperPoint {
 			g2.setTransform(at);
 			g2.drawString(df.format(Point.distance(position.x,position.y,next.position.x,next.position.y)/ SuperGUI.SCALE * 12),(position.x+next.position.x)/2, (position.y+next.position.y)/2);
 			g2.setTransform(defaultTransform);
-			// draw arrow within path
-			// g2.setColor(new Color(255, 255, 255, alpha));
-			// double distance = Math.sqrt(Math.pow(next.getPoint().x - p.x, 2)
-			// + Math.pow(-next.getPoint().y + p.y, 2));
-			// double arrowSize = distance / 15;
-			// if (arrowSize > SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0)
-			// arrowSize = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0;
-			// g.drawPolyline(new int[]{
-			// p.x + (int) (distance * 2 / 5 * Math.cos(angle)),
-			// p.x + (int) (distance * 3 / 5 * Math.cos(angle)),
-			// p.x + (int) (distance * 3 / 5 * Math.cos(angle)
-			// + arrowSize * Math.cos(angle + Math.PI * 5 / 6)),
-			// p.x + (int) (distance * 3 / 5 * Math.cos(angle)),
-			// p.x + (int) (distance * 3 / 5 * Math.cos(angle)
-			// + arrowSize * Math.cos(angle - Math.PI * 5 / 6))},
-			//
-			// new int[]{p.y - (int) (distance * 2 / 5 * Math.sin(angle)),
-			// p.y - (int) (distance * 3 / 5 * Math.sin(angle)),
-			// p.y - (int) (distance * 3 / 5 * Math.sin(angle)
-			// + arrowSize * Math
-			// .sin(angle + Math.PI * 5 / 6)),
-			// p.y - (int) (distance * 3 / 5 * Math.sin(angle)),
-			// p.y - (int) (distance * 3 / 5 * Math.sin(angle)
-			// + arrowSize * Math
-			// .sin(angle - Math.PI * 5 / 6))},
-			//
-			// 5);
 		}
 
 		// Increase alpha for points
 		int botAlpha = alpha + 100;
 		if (botAlpha > 255) botAlpha = 255;
-
-		// Draw translucent circle around point
+		
+		// Draw arc
 		g.setColor(new Color(0, 255, 0, alpha / 2));
-		g.fillOval(position.x - (int) (SuperGUI.ROBOT_DIAMETER / 2 * SuperGUI.SCALE),
-				position.y - (int) (SuperGUI.ROBOT_DIAMETER / 2 * SuperGUI.SCALE),
-				(int) (SuperGUI.SCALE * SuperGUI.ROBOT_DIAMETER), (int) (SuperGUI.SCALE * SuperGUI.ROBOT_DIAMETER));
+		int robotDiagonal = (int) (Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI);
+		int angleDiff = (int) ((angle-startAngle)*180/Math.PI);
+		while(angleDiff > 180) angleDiff -= 360;
+		while(angleDiff < -180) angleDiff += 360;
+
+		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (startAngle * 180/Math.PI - robotDiagonal), angleDiff);
+		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (startAngle * 180/Math.PI + robotDiagonal), angleDiff);
+		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (startAngle * 180/Math.PI - robotDiagonal), angleDiff);
+		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (startAngle * 180/Math.PI + robotDiagonal), angleDiff);
 
 		// draw square for bot
 		g.setColor(new Color(0, 255, 0, botAlpha));
@@ -296,6 +275,7 @@ public class SuperPoint {
 						position.y - (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.sin(Math.PI + cornerAngle + angle)),
 						position.y - (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.sin(Math.PI + angle - cornerAngle)) },
 				4);
+		
 		// draw arrow within bot
 		g.setColor(new Color(0, 0, 255, botAlpha));
 		double distance = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0;
