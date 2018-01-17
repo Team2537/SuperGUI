@@ -191,12 +191,12 @@ public class SuperPoint {
 		Arc2D frontRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
 		Arc2D backLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, 180 + startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
 		Arc2D backRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, 180 + startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
-		
+
 		path.add(new Area(frontLeft));
 		path.add(new Area(frontRight));
 		path.add(new Area(backLeft));
 		path.add(new Area(backRight));
-		
+
 		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {
 			Area a = new Area(o.shape);
@@ -257,18 +257,26 @@ public class SuperPoint {
 		// Increase alpha for points
 		int botAlpha = alpha + 100;
 		if (botAlpha > 255) botAlpha = 255;
-		
-		// Draw arc
-		g.setColor(new Color(0, 255, 0, alpha / 2));
-		int robotDiagonal = (int) (Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI);
-		int angleDiff = (int) ((angle-startAngle)*180/Math.PI);
-		while(angleDiff > 180) angleDiff -= 360;
-		while(angleDiff < -180) angleDiff += 360;
 
-		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (startAngle * 180/Math.PI - robotDiagonal), angleDiff);
-		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (startAngle * 180/Math.PI + robotDiagonal), angleDiff);
-		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (startAngle * 180/Math.PI - robotDiagonal), angleDiff);
-		g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (startAngle * 180/Math.PI + robotDiagonal), angleDiff);
+		// Draw arc
+		g.setColor(new Color(0, 255, 0, alpha / 5));
+		int robotDiagonal = (int) (Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI);
+
+		int angleDiff;
+		double initialRotateAngle = startAngle;
+		for(int i = 0; i <= actions.size(); i++) {
+			if(i == actions.size()) angleDiff = (int) ((angle-initialRotateAngle)*180/Math.PI);
+			else angleDiff = (int) ((actions.get(i).getAngle()-initialRotateAngle)*180/Math.PI);
+			while(angleDiff > 180) angleDiff -= 360;
+			while(angleDiff < -180) angleDiff += 360;
+
+			g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
+			g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
+			g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
+			g.fillArc(position.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), position.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
+
+			if(i < actions.size()) initialRotateAngle = actions.get(i).getAngle();
+		}
 
 		// draw square for bot
 		g.setColor(new Color(0, 255, 0, botAlpha));
@@ -285,7 +293,7 @@ public class SuperPoint {
 						position.y - (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.sin(Math.PI + cornerAngle + angle)),
 						position.y - (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.sin(Math.PI + angle - cornerAngle)) },
 				4);
-		
+
 		// draw arrow within bot
 		g.setColor(new Color(0, 0, 255, botAlpha));
 		double distance = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0;
