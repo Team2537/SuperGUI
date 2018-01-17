@@ -20,7 +20,7 @@ public class SuperPoint {
 	private LinkedList<SuperAction> actions;
 	private int alpha;
 	private boolean backwards;
-	private Double startAngle = null;
+	private double startAngle;
 	private static Point midpoint = null;
 	private static DecimalFormat df = new DecimalFormat("#.##");
 
@@ -43,6 +43,7 @@ public class SuperPoint {
 	public void add(Point p) {
 		if (next == null) {
 			next = new SuperPoint(p);
+			next.startAngle = this.angle;
 			if (angle > -Math.PI / 2 && angle < Math.PI / 2 && p.x < this.position.x) {
 				backwards = true;
 			}
@@ -68,18 +69,12 @@ public class SuperPoint {
 	 */
 	public void point(Point p) {
 		if (next != null) {
-
-			if(next.next == null){
-				next.startAngle = angle ;
-			}
 			next.point(p);
 			return;
 		}
 
-		if(startAngle == null){
-			startAngle = (double) 0;
-		}
-		angle = Math.atan2(this.position.y - p.y, p.x - this.position.x);
+		if(p.equals(this.position)) angle = startAngle;
+		else angle = Math.atan2(this.position.y - p.y, p.x - this.position.x);
 
 		midpoint = new Point((p.x+this.position.x)/2,(p.y+this.position.y)/2);
 	}

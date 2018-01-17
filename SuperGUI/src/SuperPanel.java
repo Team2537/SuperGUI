@@ -15,7 +15,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -193,14 +192,15 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		mousePos.x = m.getX();
-		mousePos.y = m.getY();
-
+		Point currentCursorPos = m.getPoint();
 		if (startingPoint != null && !followCursor){
-			mousePos = snap(mousePos);
+			currentCursorPos = snap(m.getPoint());
 		}
 
-		if(startingPoint != null && !startingPoint.isValidMove(mousePos, followCursor, !obstaclesVisible)) return;
+		if(startingPoint != null && !startingPoint.isValidMove(currentCursorPos, followCursor, !obstaclesVisible)) return;
+
+		mousePos.x = currentCursorPos.x;
+		mousePos.y = currentCursorPos.y;
 
 		if(startingPoint == null){
 			// Start with back to alliance station wall
