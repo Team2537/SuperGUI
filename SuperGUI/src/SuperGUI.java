@@ -1,4 +1,5 @@
 import java.awt.Color;
+
 import javax.swing.JFrame;
 
 /**
@@ -36,7 +37,7 @@ public class SuperGUI {
 	public static final double CORNER_LENGTH = 2 + 11d/12; // length of corners (x) in feet
 	public static final double CORNER_WIDTH = (FIELD_WIDTH-22)/2; // width of corners (y) in feet
 	public static final double FENCE_WIDTH = 0.1; // width of the field borders in feet. Temporarily set to 0.1
-	public static final int SCALE = 20; // px/ft
+	public static final double SCALE = 40; // px/ft
 
 	public static final double ROBOT_LENGTH = 33d / 12; // feet
 	public static final double ROBOT_WIDTH = 28d / 12; // feet
