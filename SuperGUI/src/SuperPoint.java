@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
@@ -187,6 +188,20 @@ public class SuperPoint {
 						endPoint.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE	* Math.sin(angle + Math.PI / 2)) },
 				4));
 
+		double robotDiagonal = Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI;
+		double angleDiff = (angle-startAngle)*180/Math.PI;
+		while(angleDiff > 180) angleDiff -= 360;
+		while(angleDiff < -180) angleDiff += 360;
+		Arc2D frontLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
+		Arc2D frontRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
+		Arc2D backLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, 180 + startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
+		Arc2D backRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, position.y - SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE, 180 + startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
+		
+		path.add(new Area(frontLeft));
+		path.add(new Area(frontRight));
+		path.add(new Area(backLeft));
+		path.add(new Area(backRight));
+		
 		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {
 			Area a = new Area(o.shape);
