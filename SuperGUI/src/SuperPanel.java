@@ -55,7 +55,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	public static boolean relativeAngles =false;
 
 	public SuperPanel() {
-		field = new ImageIcon(SuperGUI.FIELD_IMAGE).getImage().getScaledInstance((int) (SuperGUI.FIELD_LENGTH*SuperGUI.SCALE), -1, Image.SCALE_DEFAULT);
+		field = new ImageIcon(SuperGUI.class.getResource("/resources/FIELD.png")).getImage().getScaledInstance((int) (SuperGUI.FIELD_LENGTH*SuperGUI.SCALE), -1, Image.SCALE_DEFAULT);
 		addKeyListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);
