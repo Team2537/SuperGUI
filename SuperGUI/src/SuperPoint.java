@@ -157,19 +157,21 @@ public class SuperPoint {
 
 		Area pathArea = new Area(path);
 
-		double robotDiagonal = Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI;
-		double angleDiff = (angle-startAngle)*180/Math.PI;
-		while(angleDiff > 180) angleDiff -= 360;
-		while(angleDiff < -180) angleDiff += 360;
-		Arc2D frontLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
-		Arc2D frontRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
-		Arc2D backLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, 180 + startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
-		Arc2D backRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, 180 + startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
+		if(followingCursor) {
+			double robotDiagonal = Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI;
+			double angleDiff = (angle-startAngle)*180/Math.PI;
+			while(angleDiff > 180) angleDiff -= 360;
+			while(angleDiff < -180) angleDiff += 360;
+			Arc2D frontLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
+			Arc2D frontRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
+			Arc2D backLeft = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, 180 + startAngle * 180/Math.PI - robotDiagonal, angleDiff, Arc2D.PIE);
+			Arc2D backRight = new Arc2D.Double(position.x - SuperGUI.ROBOT_DIAMETER/2, position.y - SuperGUI.ROBOT_DIAMETER/2, SuperGUI.ROBOT_DIAMETER, SuperGUI.ROBOT_DIAMETER, 180 + startAngle * 180/Math.PI + robotDiagonal, angleDiff, Arc2D.PIE);
 
-		pathArea.add(new Area(frontLeft));
-		pathArea.add(new Area(frontRight));
-		pathArea.add(new Area(backLeft));
-		pathArea.add(new Area(backRight));
+			pathArea.add(new Area(frontLeft));
+			pathArea.add(new Area(frontRight));
+			pathArea.add(new Area(backLeft));
+			pathArea.add(new Area(backRight));
+		}
 
 		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {

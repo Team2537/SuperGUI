@@ -101,7 +101,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		}
 		if(k.getKeyCode() == deleteLastKey){
 			if(startingPoint != null){
-				startingPoint.removeFinalSuperPoint();
+				if(startingPoint.getNext() == null) startingPoint = null;
+				else startingPoint.removeFinalSuperPoint();
 			}
 		}
 		if(k.getKeyCode() == openSnapMenuKey){
@@ -263,7 +264,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 				if(mousePos.x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2) startingPoint.point(new Point(mousePos.x + 5, mousePos.y));
 				else startingPoint.point(new Point(mousePos.x - 5, mousePos.y));
 			}
-			else if (startingPoint.isValidMove(mousePos, true, false)){
+			else if (startingPoint.isValidMove(mousePos, followCursor, false)){
 				startingPoint.add(mousePos);
 				followCursor = true;
 			}
