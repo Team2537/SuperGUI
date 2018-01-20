@@ -199,7 +199,7 @@ public class SuperPoint {
 
 		// Obstacle collision
 		for(SuperObstacle o : SuperObstacle.values()) {
-			Area a = new Area(o.shape);
+			Area a = new Area(o.scaledShape);
 			a.intersect(path);
 			if(!a.isEmpty()) return false;
 		}

@@ -75,7 +75,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		g.setColor(SuperGUI.obstacleColor);
 		if(obstaclesVisible) {
 			for(SuperObstacle o : SuperObstacle.values()) {
-				g.fillPolygon(o.shape);
+				g.fillPolygon(o.scaledShape);
 			}
 		}
 
