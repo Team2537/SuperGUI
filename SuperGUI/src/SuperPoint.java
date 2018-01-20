@@ -25,10 +25,8 @@ public class SuperPoint {
 	private static DecimalFormat df = new DecimalFormat("#.##");
 
 	/**
-	 * Adds a SuperBot to the end of the bot list
-	 *
-	 * @param p
-	 *            - position of the last bot in the chain
+	 * Creates a new SuperBot
+	 * @param p - position of the bot (pixels)
 	 */
 	public SuperPoint(Point p) {
 		angle = 550;
@@ -39,7 +37,10 @@ public class SuperPoint {
 		backwards = false;
 	}
 
-	// adds new point in pixel position
+	/**
+	 * Adds a new bot to the end of the list
+	 * @param p - position of the last bot (pixels)
+	 */
 	public void add(Point p) {
 		if (next == null) {
 			next = new SuperPoint(p);
@@ -63,9 +64,7 @@ public class SuperPoint {
 
 	/**
 	 * Makes the final robot point towards a point
-	 *
-	 * @param p
-	 *            - The point to point to
+	 * @param p - The point to point to (pixels)
 	 */
 	public void point(Point p) {
 		if (next != null) {
@@ -87,6 +86,7 @@ public class SuperPoint {
 		if (next == null) return angle;
 		return next.getFinalAngle();
 	}
+
 	public boolean removeFinalSuperPoint() {
 		if (next != null && next.next== null){
 			next = null;
@@ -97,51 +97,6 @@ public class SuperPoint {
 
 	public boolean isBackwards() {
 		return backwards;
-	}
-
-	/**
-	 * returns the index of the robot containing point p
-	 *
-	 * @param p
-	 * @return
-	 */
-	public int contains(Point p) {
-		return contains(p, 0);
-	}
-
-	public int contains(Point p, int index) {
-		// bot collision
-		if (Math.sqrt(Math.pow(p.x - this.position.x, 2) + Math.pow(p.y - this.position.y, 2)) <= SuperGUI.ROBOT_DIAMETER / 2
-				* SuperGUI.SCALE)
-			return index;
-
-		// path collision
-		if (next != null && alpha > 50) {
-			double angle = Math.atan2(-next.getPoint().y + this.position.y, next.getPoint().x - this.position.x);
-			Polygon path = new Polygon(new int[] {
-					this.position.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)),
-					this.position.x + (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
-					next.getPoint().x
-					+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle - Math.PI / 2)),
-					next.getPoint().x
-					+ (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.cos(angle + Math.PI / 2)) },
-
-					new int[] { this.position.y
-							- (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE * Math.sin(angle + Math.PI / 2)),
-							this.position.y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-									* Math.sin(angle - Math.PI / 2)),
-							next.getPoint().y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-									* Math.sin(angle - Math.PI / 2)),
-							next.getPoint().y - (int) (.5 * SuperGUI.ROBOT_WIDTH * SuperGUI.SCALE
-									* Math.sin(angle + Math.PI / 2)) },
-
-					4);
-			if (path.contains(p)) return index + 1;
-		}
-
-		if (next == null) return -1;
-
-		return next.contains(p, index + 1);
 	}
 
 	/**
