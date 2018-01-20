@@ -238,7 +238,7 @@ public class SuperPoint {
 			at.rotate(2*Math.PI-angle, (scaledPosition.x+nextScaledPosition.x)/2, (scaledPosition.y +nextScaledPosition.y)/2);
 			g2.setFont(new Font(null,Font.PLAIN,20));
 			g2.setTransform(at);
-			g2.drawString(df.format(position.distance(next.position)),(scaledPosition.x+nextScaledPosition.x)/2, (scaledPosition.y+nextScaledPosition.y)/2); //TODO: Use midpoint? *12?
+			g2.drawString(df.format(position.distance(next.position)*12),(scaledPosition.x+nextScaledPosition.x)/2, (scaledPosition.y+nextScaledPosition.y)/2);
 			g2.setTransform(defaultTransform);
 		}
 

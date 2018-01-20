@@ -125,6 +125,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			if(i == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fc.getSelectedFile();
 				startingPoint = SuperReader.readCourse(selectedFile);
+				followCursor = true;
 			}
 		}
 		if (k.getKeyCode() == printCourseKey) {

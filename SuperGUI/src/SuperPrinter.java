@@ -25,35 +25,35 @@ public class SuperPrinter {
 		double destinationAngle = Math.toDegrees(point.getAngle());
 		try {
 			if (mapWriter != null) {
-				mapWriter.write((1d*point.getPoint().x/SuperGUI.SCALE) + "\n");
-				mapWriter.write((1d*point.getPoint().y/SuperGUI.SCALE) + "\n");
+				mapWriter.write((point.getPoint().x) + "\n");
+				mapWriter.write((point.getPoint().y) + "\n");
 				mapWriter.write("" + point.isBackwards() + "\n");
 				for(SuperAction a : point.getActions()) {
 					mapWriter.write(a.toString() + "\n");
 				}
 				mapWriter.write('\n');
 			}
-			
+
 			double currAngle = startAngle;
 			double angleDiff;
 			for (SuperAction a : point.getActions()) {
 				angleDiff = currAngle - Math.toDegrees(a.getAngle()); // -(destAngle - starAngle) angle -> bearing
 				currAngle = Math.toDegrees(a.getAngle());
-//				if(a.getAction() == SuperEnum.SHOOT) {
-//					angleDiff += 180;
-//					currAngle += 180;
-//					while(currAngle > 180) currAngle -= 360;
-//					while(currAngle < -180) currAngle += 360;
-//				}
+				//				if(a.getAction() == SuperEnum.SHOOT) {
+				//					angleDiff += 180;
+				//					currAngle += 180;
+				//					while(currAngle > 180) currAngle -= 360;
+				//					while(currAngle < -180) currAngle += 360;
+				//				}
 				while(angleDiff > 180) angleDiff -= 360;
 				while(angleDiff < -180) angleDiff += 360;
-				
+
 				// turn to command
 				if(angleDiff != 0){
 					if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
-					System.out.println("Turn " + angleDiff);					
+					System.out.println("Turn " + angleDiff);
 				}
-				
+
 				// place gear/shoot
 				switch (a.getAction()) {
 				case SWITCH:
@@ -72,12 +72,12 @@ public class SuperPrinter {
 					break;
 				}
 			}
-			
+
 			if(point.getNext() == null) {
 				writeAutoChooser();
 				return;
 			}
-			
+
 			angleDiff = currAngle - destinationAngle;
 			while(angleDiff > 180) angleDiff -= 360;
 			while(angleDiff < -180) angleDiff += 360;
@@ -86,14 +86,11 @@ public class SuperPrinter {
 				if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
 				System.out.println("Turn " + angleDiff);
 			}
-			
+
 			// drive distance to next point
-			int y2 = point.getNext().getPoint().y;
-			int x2 = point.getNext().getPoint().x;
-			double distance = Math.sqrt(Math.pow(y2 - point.getPoint().y, 2) + Math.pow(x2 - point.getPoint().x, 2))
-					/ SuperGUI.SCALE * 12; // distance in inches
+			double distance = point.getPoint().distance(point.getNext().getPoint()) * 12;
 			if (point.isBackwards()) distance = -distance;
-			
+
 			if (distance != 0) {
 				if(commandWriter != null) commandWriter.write("\t\taddSequential(new CourseCorrect(" + distance + "));\n");
 				System.out.println("Drive " + distance);
@@ -107,7 +104,7 @@ public class SuperPrinter {
 
 		printCourse(point.getNext(), destinationAngle, commandWriter, mapWriter);
 	}
-	
+
 	/**
 	 * Writes the autoChooser file in the robot code
 	 */
@@ -119,9 +116,9 @@ public class SuperPrinter {
 			autoWriter = new PrintWriter(SuperGUI.AUTOCHOOSER_LOCATION, "UTF-8");
 			File dir = new File(SuperGUI.MAPS_DIRECTORY);
 			File[] mapsList =  dir.listFiles();
-			
+
 			autoWriter.write("package org.usfirst.frc.team2537.robot.auto;\n\n");
-			
+
 			if(mapsList != null){
 				for(File map : mapsList){
 					String mapName = map.getName();
@@ -129,13 +126,13 @@ public class SuperPrinter {
 				}
 				autoWriter.write("\n");
 			}
-			
+
 			autoWriter.write("import edu.wpi.first.wpilibj.command.Command;\n");
 			autoWriter.write("import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;\n\n");
-						
+
 			autoWriter.write("public class AutoChooser extends SendableChooser<Command> {\n");
 			autoWriter.write("\tpublic AutoChooser() {\n");
-			
+
 			if(mapsList != null){
 				for(File map : mapsList){
 					String mapName = map.getName();
@@ -146,10 +143,10 @@ public class SuperPrinter {
 						autoWriter.write("\t\taddObject(\"" + mapName + "\", new " + mapName + "());\n");
 				}
 			}
-			
+
 			autoWriter.write("\t}\n");
 			autoWriter.write("}");
-			
+
 			autoWriter.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
