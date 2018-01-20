@@ -11,10 +11,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -228,23 +230,25 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	 * @return the point on the SuperPoint direction line closest to the inputted point
 	 */
 	private Point snap(Point p) {
+		Point2D.Double downscaledP = new Point2D.Double(p.x/SuperGUI.SCALE, p.y/SuperGUI.SCALE);
 		double slope = Math.tan(startingPoint.getFinalAngle()); // slope of final point
 		double x;
 		double y;
-		Point result;
+		Point2D.Double result;
 		if(slope == 0){
-			result = new Point(p.x, startingPoint.getFinalPoint().y);
+			result = new Point2D.Double(downscaledP.x, startingPoint.getFinalPoint().y);
 		} else {
 			double invslope = -1 / slope; // slope of line perpendicular
 
 			// y-intercept of perpendicular line
-			double b_perp = startingPoint.getFinalPoint().y - p.y - invslope * (p.x - startingPoint.getFinalPoint().x); // of
+			double b_perp = startingPoint.getFinalPoint().y - downscaledP.y - invslope * (downscaledP.x - startingPoint.getFinalPoint().x);
 
 			x = (b_perp - 0) / (slope - invslope);
 			y = -slope * x + 0;
-			result = new Point((int) (x + startingPoint.getFinalPoint().x), (int) (y + startingPoint.getFinalPoint().y));
+			result = new Point2D.Double(x + startingPoint.getFinalPoint().x, y + startingPoint.getFinalPoint().y);
 		}
-		return result;
+
+		return new Point((int) (result.x * SuperGUI.SCALE), (int) (result.y * SuperGUI.SCALE));
 	}
 
 	@Override
@@ -297,7 +301,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	@Override
 	public void actionPerformed(ActionEvent e){
 		if(startingPoint != null){
-			double angle = Math.atan2(startingPoint.getFinalPoint().y - mousePos.y, mousePos.x - startingPoint.getFinalPoint().x);
+			double angle = Math.atan2(startingPoint.getFinalPoint().y - mousePos.y/SuperGUI.SCALE, mousePos.x/SuperGUI.SCALE - startingPoint.getFinalPoint().x);
 			for(int i = 0 ; i<SuperEnum.values().length;i++){
 				if(e.getActionCommand().equals(SuperEnum.values()[i].name)){
 					startingPoint.addAction(new SuperAction(SuperEnum.values()[i], angle));
