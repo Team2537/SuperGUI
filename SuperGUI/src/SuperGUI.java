@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 /**
@@ -56,7 +57,7 @@ public class SuperGUI {
 
 	static {
 		Dimension w = Toolkit.getDefaultToolkit().getScreenSize();
-		SCALE = w.getWidth()/FIELD_LENGTH;
+		SCALE = w.getHeight()/FIELD_WIDTH*2/3;
 	}
 
 	public static void main(String[] args) {
