@@ -1,5 +1,6 @@
 import java.awt.Color;
-
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
@@ -37,7 +38,7 @@ public class SuperGUI {
 	public static final double CORNER_LENGTH = 2 + 11d/12; // length of corners (x) in feet
 	public static final double CORNER_WIDTH = (FIELD_WIDTH-22)/2; // width of corners (y) in feet
 	public static final double FENCE_WIDTH = 0.1; // width of the field borders in feet. Temporarily set to 0.1
-	public static final double SCALE = 40; // px/ft
+	public static final double SCALE; // px/ft
 
 	public static final double ROBOT_LENGTH = 33d / 12; // feet
 	public static final double ROBOT_WIDTH = 28d / 12; // feet
@@ -53,6 +54,11 @@ public class SuperGUI {
 	public static final Color cursorColor = new Color(255, 0, 0);
 	public static final Color obstacleColor = new Color(0, 0, 0, 200);
 
+	static {
+		Dimension w = Toolkit.getDefaultToolkit().getScreenSize();
+		SCALE = w.getWidth()/FIELD_LENGTH;
+	}
+
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("SuperGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +73,9 @@ public class SuperGUI {
 		frame.addKeyListener(panel);
 		panel.requestFocusInWindow();
 
+		frame.setUndecorated(true);
 		frame.setResizable(false);
+
 		frame.pack();
 		frame.setVisible(true);
 	}
