@@ -96,16 +96,17 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if(k.getKeyCode() == deleteAllKey){
+		switch(k.getKeyCode()) {
+		case deleteAllKey:
 			startingPoint = null;
-		}
-		if(k.getKeyCode() == deleteLastKey){
+			break;
+		case deleteLastKey:
 			if(startingPoint != null){
 				if(startingPoint.getNext() == null) startingPoint = null;
 				else startingPoint.removeFinalSuperPoint();
 			}
-		}
-		if(k.getKeyCode() == openSnapMenuKey){
+			break;
+		case openSnapMenuKey:
 			if(startingPoint == null) {
 				for(SuperSnapEnum s : SuperSnapEnum.values()) {
 					if(s.isStartingPos) {
@@ -116,11 +117,17 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			} else {
 				snapMenu.show(k.getComponent(),mousePos.x,mousePos.y);
 			}
-		}
-		if (k.getKeyCode() == toggleFollowCursorKey) followCursor = !followCursor;
-		if (k.getKeyCode() == toggleObstacleVisbilityKey) obstaclesVisible = !obstaclesVisible;
-		if (k.getKeyCode() == relativeAngleToggleKey) relativeAngles = !relativeAngles;
-		if (k.getKeyCode() == openMapKey) {
+			break;
+		case toggleFollowCursorKey:
+			followCursor = !followCursor;
+			break;
+		case toggleObstacleVisbilityKey:
+			obstaclesVisible = !obstaclesVisible;
+			break;
+		case relativeAngleToggleKey:
+			relativeAngles = !relativeAngles;
+			break;
+		case openMapKey:
 			final JFileChooser fc = new JFileChooser(SuperGUI.MAPS_DIRECTORY);
 			int i = fc.showOpenDialog(fc);
 			if(i == JFileChooser.APPROVE_OPTION) {
@@ -128,8 +135,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 				startingPoint = SuperReader.readCourse(selectedFile);
 				followCursor = true;
 			}
-		}
-		if (k.getKeyCode() == printCourseKey) {
+			break;
+		case printCourseKey:
 			System.out.println("Course================" + startingPoint.getNumBots());
 			String mapName;
 			if(SuperGUI.WRITE_COMMAND || SuperGUI.WRITE_MAP) {
@@ -184,8 +191,11 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
+			break;
+		case exitKey:
+			quit();
+			break;
 		}
-		if (k.getKeyCode() == exitKey) quit();
 		repaint();
 	}
 
