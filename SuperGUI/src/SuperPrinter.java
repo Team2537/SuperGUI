@@ -55,21 +55,10 @@ public class SuperPrinter {
 				}
 
 				// place gear/shoot
-				switch (a.getAction()) {
-				case SWITCH:
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new SwitchCommand());\n");
-					System.out.println("Place Switch");
-					break;
-				case SCALE:
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new ScaleCommand());\n");
-					System.out.println("Place Scale");
-					break;
-				case PICKUP:
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new PickupCommand());\n");
-					System.out.println("Pickup cube");
-					break;
-				case ROTATE:
-					break;
+				if(a.getAction() != SuperEnum.ROTATE && commandWriter != null) {
+					String commandName = a.getAction().command.substring(a.getAction().command.lastIndexOf('.') + 1);
+					commandWriter.write("\t\taddSequential(new " + commandName + "());\n");
+					System.out.println(commandName);
 				}
 			}
 

@@ -4,14 +4,16 @@
  *
  */
 public enum SuperEnum {
-	SWITCH("SWITCH"),
-	SCALE("SCALE"),
-	PICKUP("PICKUP"),
-	ROTATE("ROTATE"),
-	/* ACTION("ACTION NAME") */;
+	SWITCH("SWITCH", "org.usfirst.frc.team2537.robot.auto.SwitchCommand"),
+	SCALE("SCALE", "org.usfirst.frc.team2537.robot.auto.ScaleCommand"),
+	PICKUP("PICKUP", "org.usfirst.frc.team2537.robot.auto.PickupCommand"),
+	ROTATE("ROTATE", SuperGUI.AUTOROTATE_COMMAND),
+	/* ACTION("ACTION NAME", "Location of command") */;
 
 	final String name;
-	private SuperEnum(String name){
+	final String command;
+	private SuperEnum(String name, String command){
 		this.name = name;
+		this.command = command;
 	}
 }

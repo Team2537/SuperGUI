@@ -163,8 +163,10 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 						commandWriter.write("package " + SuperGUI.COMMANDS_DIRECTORY.substring(4, SuperGUI.COMMANDS_DIRECTORY.length() - 1).replace('/', '.') + ";\n\n");
 						commandWriter.write("import " + SuperGUI.AUTOROTATE_COMMAND + ";\n");
 						commandWriter.write("import " + SuperGUI.AUTODRIVE_COMMAND + ";\n");
-						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.GearCommand;\n\n");
-						commandWriter.write("import edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
+						for(SuperEnum e : SuperEnum.values()) {
+							commandWriter.write("import " + e.command + ";\n");
+						}
+						commandWriter.write("\nimport edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
 						commandWriter.write("public class " + mapName + " extends CommandGroup {\n");
 						commandWriter.write("\tpublic " + mapName + "() {\n");
 
