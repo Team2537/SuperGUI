@@ -29,7 +29,7 @@ import javax.swing.JFrame;
  *
  * @author Arden Zhang
  * @author Andrew Wollack
- * @author Alex Taber
+ * @author Alex Taber (sort of)
  *
  */
 public class SuperGUI {
@@ -45,12 +45,12 @@ public class SuperGUI {
 	public static final double ROBOT_WIDTH = 28d / 12; // feet
 	public static final double ROBOT_DIAMETER = Math.sqrt(Math.pow(ROBOT_LENGTH, 2) + Math.pow(ROBOT_WIDTH, 2));
 
-	public static final boolean WRITE_COMMAND = false; // write the code to a command and generate autoChooser
+	public static final boolean WRITE_COMMAND = true; // write the code to a command and generate autoChooser
 	public static final boolean WRITE_MAP = true; // write the code to a readable map file
-	public static final String COMMANDS_DIRECTORY = "src/org/usfirst/frc/team2537/autocommands/";
+	public static final String COMMANDS_DIRECTORY = "src/commands/"; // src/org/usfirst/frc/team2537/robot/autocommands/
 	public static final String MAPS_DIRECTORY = "src/maps/";
 
-	public static final String AUTOCHOOSER_LOCATION = "src/maps/AutoChooser.java"; // src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java
+	public static final String AUTOCHOOSER_LOCATION = "src/commands/AutoChooser.java"; // src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java
 
 	public static final Color cursorColor = new Color(255, 0, 0);
 	public static final Color obstacleColor = new Color(0, 0, 0, 200);

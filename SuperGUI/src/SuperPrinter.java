@@ -114,15 +114,16 @@ public class SuperPrinter {
 		PrintWriter autoWriter;
 		try {
 			autoWriter = new PrintWriter(SuperGUI.AUTOCHOOSER_LOCATION, "UTF-8");
-			File dir = new File(SuperGUI.MAPS_DIRECTORY);
-			File[] mapsList =  dir.listFiles();
+			File dir = new File(SuperGUI.COMMANDS_DIRECTORY);
+			File[] commandsList =  dir.listFiles();
 
-			autoWriter.write("package org.usfirst.frc.team2537.robot.auto;\n\n");
+			autoWriter.write("package " + SuperGUI.AUTOCHOOSER_LOCATION.substring(4, SuperGUI.AUTOCHOOSER_LOCATION.lastIndexOf("/")).replace('/', '.') + ";\n\n");
 
-			if(mapsList != null){
-				for(File map : mapsList){
-					String mapName = map.getName();
-					autoWriter.write("import org.usfirst.frc.team2537.maps." + mapName.substring(0, mapName.length() - 5) + ";\n");
+			if(commandsList != null){
+				for(File command : commandsList){
+					if(command.getPath().equals(SuperGUI.AUTOCHOOSER_LOCATION)) continue;
+					String commandName = command.getName();
+					autoWriter.write("import " + SuperGUI.COMMANDS_DIRECTORY.substring(4, SuperGUI.COMMANDS_DIRECTORY.length()).replace('/', '.') + commandName.substring(0, commandName.length() - 5) + ";\n");
 				}
 				autoWriter.write("\n");
 			}
@@ -133,14 +134,15 @@ public class SuperPrinter {
 			autoWriter.write("public class AutoChooser extends SendableChooser<Command> {\n");
 			autoWriter.write("\tpublic AutoChooser() {\n");
 
-			if(mapsList != null){
-				for(File map : mapsList){
-					String mapName = map.getName();
-					mapName = mapName.substring(0, mapName.length() - 5);
-					if(mapName.equals("DefaultAuto") || mapName.equals("DriveForward"))
-						autoWriter.write("\t\taddDefault(\"" + mapName + "\", new " + mapName + "());\n");
+			if(commandsList != null){
+				for(File command : commandsList){
+					if(command.getPath().equals(SuperGUI.AUTOCHOOSER_LOCATION)) continue;
+					String commandName = command.getName();
+					commandName = commandName.substring(0, commandName.length() - 5);
+					if(commandName.equals("DefaultAuto") || commandName.equals("DriveForward"))
+						autoWriter.write("\t\taddDefault(\"" + commandName + "\", new " + commandName + "());\n");
 					else
-						autoWriter.write("\t\taddObject(\"" + mapName + "\", new " + mapName + "());\n");
+						autoWriter.write("\t\taddObject(\"" + commandName + "\", new " + commandName + "());\n");
 				}
 			}
 
