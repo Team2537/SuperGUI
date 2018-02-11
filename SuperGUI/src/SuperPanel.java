@@ -94,6 +94,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		System.exit(0);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void keyPressed(KeyEvent k) {
 		switch(k.getKeyCode()) {
@@ -159,9 +160,9 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 					File commandFile = new File(SuperGUI.COMMANDS_DIRECTORY + mapName + ".java");
 					try {
 						BufferedWriter commandWriter = new BufferedWriter(new FileWriter(commandFile));
-						commandWriter.write("package org.usfirst.frc.team2537.autocommands;\n\n");
-						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.AutoRotateCommand;\n");
-						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.CourseCorrect;\n");
+						commandWriter.write("package " + SuperGUI.COMMANDS_DIRECTORY.substring(4, SuperGUI.COMMANDS_DIRECTORY.length() - 1).replace('/', '.') + ";\n\n");
+						commandWriter.write("import " + SuperGUI.AUTOROTATE_COMMAND + ";\n");
+						commandWriter.write("import " + SuperGUI.AUTODRIVE_COMMAND + ";\n");
 						commandWriter.write("import org.usfirst.frc.team2537.robot.auto.GearCommand;\n\n");
 						commandWriter.write("import edu.wpi.first.wpilibj.command.CommandGroup;\n\n");
 						commandWriter.write("public class " + mapName + " extends CommandGroup {\n");

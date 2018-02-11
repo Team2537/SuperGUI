@@ -47,10 +47,13 @@ public class SuperGUI {
 
 	public static final boolean WRITE_COMMAND = true; // write the code to a command and generate autoChooser
 	public static final boolean WRITE_MAP = true; // write the code to a readable map file
+
 	public static final String COMMANDS_DIRECTORY = "src/commands/"; // src/org/usfirst/frc/team2537/robot/autocommands/
 	public static final String MAPS_DIRECTORY = "src/maps/";
-
 	public static final String AUTOCHOOSER_LOCATION = "src/commands/AutoChooser.java"; // src/org/usfirst/frc/team2537/robot/auto/AutoChooser.java
+
+	public static final String AUTOROTATE_COMMAND = "org.usfirst.frc.team2537.robot.auto.RotateCommand";
+	public static final String AUTODRIVE_COMMAND = "org.usfirst.frc.team2537.robot.auto.DriveStraightCommand";
 
 	public static final Color cursorColor = new Color(255, 0, 0);
 	public static final Color obstacleColor = new Color(0, 0, 0, 200);

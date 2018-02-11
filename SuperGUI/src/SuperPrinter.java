@@ -50,7 +50,7 @@ public class SuperPrinter {
 
 				// turn to command
 				if(angleDiff != 0){
-					if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
+					if(commandWriter != null) commandWriter.write("\t\taddSequential(new " + SuperGUI.AUTOROTATE_COMMAND.substring(SuperGUI.AUTOROTATE_COMMAND.lastIndexOf('.') + 1) + "(" + angleDiff + "));\n");
 					System.out.println("Turn " + angleDiff);
 				}
 
@@ -83,7 +83,7 @@ public class SuperPrinter {
 			while(angleDiff < -180) angleDiff += 360;
 
 			if (angleDiff != 0) {
-				if(commandWriter != null) commandWriter.write("\t\taddSequential(new AutoRotateCommand(" + angleDiff + "));\n");
+				if(commandWriter != null) commandWriter.write("\t\taddSequential(new " + SuperGUI.AUTOROTATE_COMMAND.substring(SuperGUI.AUTOROTATE_COMMAND.lastIndexOf('.') + 1) + "(" + angleDiff + "));\n");
 				System.out.println("Turn " + angleDiff);
 			}
 
@@ -92,7 +92,7 @@ public class SuperPrinter {
 			if (point.isBackwards()) distance = -distance;
 
 			if (distance != 0) {
-				if(commandWriter != null) commandWriter.write("\t\taddSequential(new CourseCorrect(" + distance + "));\n");
+				if(commandWriter != null) commandWriter.write("\t\taddSequential(new " + SuperGUI.AUTODRIVE_COMMAND.substring(SuperGUI.AUTODRIVE_COMMAND.lastIndexOf('.') + 1) + "(" + distance + "));\n");
 				System.out.println("Drive " + distance);
 			}
 
