@@ -1,5 +1,8 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -45,6 +48,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	private Image field;
 	private boolean followCursor = false;
+	private Double alignBot;
+	private Point trueMousePos;
 	private Point mousePos;
 	private SuperPoint startingPoint;
 	private int botTransparency;
@@ -72,22 +77,29 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(field, 0, 0, null);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawImage(field, 0, 0, null);
 
-		g.setColor(SuperGUI.obstacleColor);
+		g2.setColor(SuperGUI.obstacleColor);
 		if(obstaclesVisible) {
 			for(SuperObstacle o : SuperObstacle.values()) {
-				g.fillPolygon(o.scaledShape);
+				g2.fillPolygon(o.scaledShape);
 			}
 		}
 
 		if (startingPoint != null) {
 			if (followCursor && !menu.isVisible()) startingPoint.point(mousePos);
-			startingPoint.draw(g, botTransparency);
+			if(alignBot != null) {
+				g2.setColor(new Color(0, 0, 0, 25));
+				g2.setStroke(new BasicStroke((float) (SuperGUI.ROBOT_WIDTH*SuperGUI.SCALE)));
+				g2.drawLine(mousePos.x, mousePos.y, trueMousePos.x, trueMousePos.y);
+			}
+			startingPoint.draw(g2, botTransparency);
 		}
 
-		g.setColor(SuperGUI.cursorColor);
-		g.drawOval(mousePos.x - cursorRadius, mousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
+		g2.setColor(SuperGUI.cursorColor);
+		g2.drawOval(mousePos.x - cursorRadius, mousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
+		if(alignBot != null) g2.drawOval(trueMousePos.x - cursorRadius, trueMousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
 	}
 
 	private void quit() {
@@ -195,11 +207,59 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 				e.printStackTrace();
 			}
 			break;
+
+		case KeyEvent.VK_RIGHT:
+			if(startingPoint != null && !followCursor) alignBot = 0d;
+			break;
+		case KeyEvent.VK_1:
+			if(startingPoint != null && !followCursor) alignBot = Math.PI/6;
+			break;
+		case KeyEvent.VK_2:
+			if(startingPoint != null && !followCursor) alignBot = Math.PI/4;
+			break;
+		case KeyEvent.VK_3:
+			if(startingPoint != null && !followCursor) alignBot = Math.PI/3;
+			break;
+		case KeyEvent.VK_UP:
+			if(startingPoint != null && !followCursor) alignBot = Math.PI/2;
+			break;
+		case KeyEvent.VK_4:
+			if(startingPoint != null && !followCursor) alignBot = 2*Math.PI/3;
+			break;
+		case KeyEvent.VK_5:
+			if(startingPoint != null && !followCursor) alignBot = 3*Math.PI/4;
+			break;
+		case KeyEvent.VK_6:
+			if(startingPoint != null && !followCursor) alignBot = 5*Math.PI/6;
+			break;
+
 		case exitKey:
 			quit();
 			break;
 		}
 		repaint();
+	}
+
+	private Point align(Point p) {
+		Point2D.Double downscaledP = new Point2D.Double(p.x/SuperGUI.SCALE, p.y/SuperGUI.SCALE);
+		double slope = Math.tan(startingPoint.getFinalAngle()); // slope of final point
+		double x;
+		double y;
+		Point2D.Double result;
+		if(slope == 0){
+			result = new Point2D.Double(downscaledP.x, startingPoint.getFinalPoint().y);
+		} else {
+			double angleSlope = Math.tan(alignBot); // slope of angle
+
+			// y-intercept of angle line
+			double b_angle = startingPoint.getFinalPoint().y - downscaledP.y - angleSlope * (downscaledP.x - startingPoint.getFinalPoint().x);
+
+			x = (b_angle - 0) / (slope - angleSlope);
+			y = -slope * x + 0;
+			result = new Point2D.Double(x + startingPoint.getFinalPoint().x, y + startingPoint.getFinalPoint().y);
+		}
+
+		return new Point((int) (result.x * SuperGUI.SCALE), (int) (result.y * SuperGUI.SCALE));
 	}
 
 	@Override
@@ -209,9 +269,11 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 
 	@Override
 	public void mouseMoved(MouseEvent m) {
+		trueMousePos = m.getPoint();
 		Point currentCursorPos = m.getPoint();
 		if (startingPoint != null && !followCursor){
 			currentCursorPos = snap(m.getPoint());
+			if(alignBot != null) currentCursorPos = align(m.getPoint());
 		}
 
 		if(startingPoint != null && !startingPoint.isValidMove(currentCursorPos, followCursor, !obstaclesVisible)) return;
@@ -280,6 +342,12 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			else if (startingPoint.isValidMove(mousePos, followCursor, false)){
 				startingPoint.add(mousePos);
 				followCursor = true;
+			}
+
+			if(alignBot != null) {
+				followCursor = false;
+				startingPoint.point(trueMousePos);
+				alignBot = null;
 			}
 		}
 		repaint();

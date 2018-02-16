@@ -1,7 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
@@ -215,8 +214,9 @@ public class SuperPoint {
 		return next.remove(index - 1);
 	}
 
-	public void draw(Graphics g, int alpha) {
-		Graphics2D g2 = (Graphics2D) g;
+	public void draw(Graphics2D g, int alpha) {
+		//TODO: use only g2
+		Graphics2D g2 = g;
 		Point scaledPosition = new Point((int) (position.x*SuperGUI.SCALE), (int) (position.y*SuperGUI.SCALE));
 
 		if (next != null) {
