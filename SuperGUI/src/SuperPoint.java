@@ -214,9 +214,7 @@ public class SuperPoint {
 		return next.remove(index - 1);
 	}
 
-	public void draw(Graphics2D g, int alpha) {
-		//TODO: use only g2
-		Graphics2D g2 = g;
+	public void draw(Graphics2D g2, int alpha) {
 		Point scaledPosition = new Point((int) (position.x*SuperGUI.SCALE), (int) (position.y*SuperGUI.SCALE));
 
 		if (next != null) {
@@ -249,7 +247,7 @@ public class SuperPoint {
 		if (botAlpha > 255) botAlpha = 255;
 
 		// Draw arc
-		g.setColor(new Color(0, 255, 0, alpha / 5));
+		g2.setColor(new Color(0, 255, 0, alpha / 5));
 		int robotDiagonal = (int) (Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH) * 180/Math.PI);
 
 		int angleDiff;
@@ -260,18 +258,18 @@ public class SuperPoint {
 			while(angleDiff > 180) angleDiff -= 360;
 			while(angleDiff < -180) angleDiff += 360;
 
-			g.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
-			g.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
-			g.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
-			g.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
+			g2.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
+			g2.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
+			g2.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI - robotDiagonal), angleDiff);
+			g2.fillArc(scaledPosition.x - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), scaledPosition.y - (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE/2), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), (int) (SuperGUI.ROBOT_DIAMETER*SuperGUI.SCALE), 180 + (int) (initialRotateAngle * 180/Math.PI + robotDiagonal), angleDiff);
 
 			if(i < actions.size()) initialRotateAngle = actions.get(i).getAngle();
 		}
 
 		// draw square for bot
-		g.setColor(new Color(0, 255, 0, botAlpha));
+		g2.setColor(new Color(0, 255, 0, botAlpha));
 		double cornerAngle = Math.atan2(SuperGUI.ROBOT_WIDTH, SuperGUI.ROBOT_LENGTH);
-		g.fillPolygon(
+		g2.fillPolygon(
 				new int[] {
 						scaledPosition.x + (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.cos(cornerAngle + angle)),
 						scaledPosition.x + (int) (.5 * SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE * Math.cos(angle - cornerAngle)),
@@ -286,6 +284,7 @@ public class SuperPoint {
 
 		// draw arrow within bot
 		g2.setColor(new Color(0, 0, 255, botAlpha));
+		g2.setStroke(new BasicStroke());
 		double distance = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0;
 		double arrowSize = distance / 2;
 		g2.drawPolyline(
