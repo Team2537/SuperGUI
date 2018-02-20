@@ -98,7 +98,7 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		}
 
 		g2.setColor(SuperGUI.cursorColor);
-		g2.drawOval(mousePos.x - cursorRadius, mousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
+		if(obstaclesVisible) g2.drawOval(mousePos.x - cursorRadius, mousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
 		if(alignBot != null) g2.drawOval(trueMousePos.x - cursorRadius, trueMousePos.y - cursorRadius, cursorRadius * 2, cursorRadius * 2);
 	}
 
@@ -224,13 +224,13 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 			if(startingPoint != null && !followCursor) alignBot = Math.PI/2;
 			break;
 		case KeyEvent.VK_4:
-			if(startingPoint != null && !followCursor) alignBot = 2*Math.PI/3;
+			if(startingPoint != null && !followCursor) alignBot = -Math.PI/6;
 			break;
 		case KeyEvent.VK_5:
-			if(startingPoint != null && !followCursor) alignBot = 3*Math.PI/4;
+			if(startingPoint != null && !followCursor) alignBot = -Math.PI/4;
 			break;
 		case KeyEvent.VK_6:
-			if(startingPoint != null && !followCursor) alignBot = 5*Math.PI/6;
+			if(startingPoint != null && !followCursor) alignBot = -Math.PI/3;
 			break;
 
 		case exitKey:
@@ -246,18 +246,14 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		double x;
 		double y;
 		Point2D.Double result;
-		if(slope == 0){
-			result = new Point2D.Double(downscaledP.x, startingPoint.getFinalPoint().y);
-		} else {
-			double angleSlope = Math.tan(alignBot); // slope of angle
+		double angleSlope = Math.tan(alignBot); // slope of angle
 
-			// y-intercept of angle line
-			double b_angle = startingPoint.getFinalPoint().y - downscaledP.y - angleSlope * (downscaledP.x - startingPoint.getFinalPoint().x);
+		// y-intercept of angle line
+		double b_angle = startingPoint.getFinalPoint().y - downscaledP.y - angleSlope * (downscaledP.x - startingPoint.getFinalPoint().x);
 
-			x = (b_angle - 0) / (slope - angleSlope);
-			y = -slope * x + 0;
-			result = new Point2D.Double(x + startingPoint.getFinalPoint().x, y + startingPoint.getFinalPoint().y);
-		}
+		x = (b_angle - 0) / (slope - angleSlope);
+		y = -slope * x + 0;
+		result = new Point2D.Double(x + startingPoint.getFinalPoint().x, y + startingPoint.getFinalPoint().y);
 
 		return new Point((int) (result.x * SuperGUI.SCALE), (int) (result.y * SuperGUI.SCALE));
 	}
@@ -272,8 +268,8 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 		trueMousePos = m.getPoint();
 		Point currentCursorPos = m.getPoint();
 		if (startingPoint != null && !followCursor){
-			currentCursorPos = snap(m.getPoint());
 			if(alignBot != null) currentCursorPos = align(m.getPoint());
+			else currentCursorPos = snap(m.getPoint());
 		}
 
 		if(startingPoint != null && !startingPoint.isValidMove(currentCursorPos, followCursor, !obstaclesVisible)) return;

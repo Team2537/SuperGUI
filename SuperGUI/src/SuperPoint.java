@@ -285,10 +285,10 @@ public class SuperPoint {
 				4);
 
 		// draw arrow within bot
-		g.setColor(new Color(0, 0, 255, botAlpha));
+		g2.setColor(new Color(0, 0, 255, botAlpha));
 		double distance = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2.0;
 		double arrowSize = distance / 2;
-		g.drawPolyline(
+		g2.drawPolyline(
 				new int[] {
 						scaledPosition.x + (int) (distance * 2 / 5 * Math.cos(angle + Math.PI)),
 						scaledPosition.x + (int) (distance * 3 / 5 * Math.cos(angle)),
@@ -308,22 +308,22 @@ public class SuperPoint {
 			// draw arrow
 			switch (a.getAction()) {
 			case SWITCH:
-				g.setColor(new Color(0, 0, 255));
+				g2.setColor(new Color(0, 0, 255));
 				break;
 			case SCALE:
-				g.setColor(new Color(255, 0, 0));
+				g2.setColor(new Color(255, 0, 0));
 				break;
 			case PICKUP:
-				g.setColor(new Color(0, 255, 0));
+				g2.setColor(new Color(0, 255, 0));
 				break;
 			case ROTATE:
-				g.setColor(new Color(255, 255, 255));
+				g2.setColor(new Color(255, 255, 255));
 				break;
 			}
 
 			double arrowStart = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE / 2; // distance of start of arrow from center of point
 			double arrowEnd = SuperGUI.ROBOT_DIAMETER * SuperGUI.SCALE; // distance of tip of arrow from center of point
-			g.drawPolyline(
+			g2.drawPolyline(
 					new int[] {
 							(int) (scaledPosition.x + arrowStart * Math.cos(a.getAngle())),
 							(int) (scaledPosition.x + arrowEnd * Math.cos(a.getAngle())),
@@ -339,7 +339,7 @@ public class SuperPoint {
 					5);
 		}
 
-		if (next != null) next.draw(g, alpha);
+		if (next != null) next.draw(g2, alpha);
 		else {
 			//drawing user info
 			AffineTransform defaultTransform = g2.getTransform();
