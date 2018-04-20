@@ -8,7 +8,19 @@ import java.io.UnsupportedEncodingException;
 public class SuperPrinter {
 
 	public static void printCourse(SuperPoint p, BufferedWriter commandWriter, BufferedWriter mapWriter) {
-		printCourse(p, Math.toDegrees(p.getAngle()), commandWriter, mapWriter);
+//		printCourse(p, Math.toDegrees(p.getAngle()), commandWriter, mapWriter);
+		printAbsoluteCourse(p, p.getPoint().x, p.getPoint().y);
+	}
+	
+	public static void printAbsoluteCourse(SuperPoint point, double startx, double starty) {
+		if (point == null) throw new IllegalArgumentException("Null point");
+		System.out.println("x: " + ((point.getPoint().y - starty) * .3048));
+		System.out.println("y: " + ((point.getPoint().x - startx) * .3048));
+		System.out.println(-Math.toDegrees(point.getAngle()));
+		System.out.println();
+
+		if(point.getNext() == null) return;
+		printAbsoluteCourse(point.getNext(), startx, starty);
 	}
 
 	/**
@@ -94,7 +106,7 @@ public class SuperPrinter {
 		printCourse(point.getNext(), destinationAngle, commandWriter, mapWriter);
 	}
 
-	/**
+	/**printCourse
 	 * Writes the autoChooser file in the robot code
 	 */
 	public static void writeAutoChooser(){

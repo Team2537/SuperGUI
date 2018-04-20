@@ -196,9 +196,9 @@ public class SuperPanel extends JPanel implements KeyListener, MouseMotionListen
 				}
 			} else {
 				if(startingPoint.getPoint().x < SuperGUI.FIELD_LENGTH*SuperGUI.SCALE/2)
-					SuperPrinter.printCourse(startingPoint, 0, null, mapWriter);
+					SuperPrinter.printCourse(startingPoint, null, mapWriter);
 				else
-					SuperPrinter.printCourse(startingPoint, 180, null, mapWriter);
+					SuperPrinter.printCourse(startingPoint, null, mapWriter);
 			}
 
 			try {
